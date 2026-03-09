@@ -4,6 +4,33 @@ import { Badge } from "@/components/ui/badge";
 
 const designs = [
   {
+    id: 11,
+    name: "Cyberpunk",
+    description: "ネオン、グリッチエフェクト、サイバー感全開",
+    path: "/designs/11-cyberpunk",
+    preview: "bg-black",
+    accent: "from-cyan-400 to-pink-500",
+    isCool: true,
+  },
+  {
+    id: 12,
+    name: "Brutalist",
+    description: "大胆なタイポグラフィ、型破りでRaw",
+    path: "/designs/12-brutalist",
+    preview: "bg-white",
+    accent: "from-black to-zinc-800",
+    isCool: true,
+  },
+  {
+    id: 13,
+    name: "Aurora",
+    description: "オーロラのような美しいグラデーション",
+    path: "/designs/13-aurora",
+    preview: "bg-gradient-to-b from-slate-950 to-slate-900",
+    accent: "from-emerald-400 via-purple-400 to-blue-400",
+    isCool: true,
+  },
+  {
     id: 6,
     name: "Warm Natural",
     description: "アースカラー、温かみのある自然な雰囲気",
@@ -99,8 +126,39 @@ export default function DesignsPage() {
             LifeConnection デザイン候補
           </h1>
           <p className="text-zinc-400 text-lg">
-            10パターンから選んでください
+            13パターンから選んでください
           </p>
+        </div>
+
+        {/* Cool Designs Section */}
+        <div className="mb-12">
+          <h2 className="text-xl font-semibold mb-6 flex items-center gap-2">
+            <span className="text-cyan-400">🔥</span>
+            クールなデザイン（COOL）
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {designs.filter(d => d.isCool).map((design) => (
+              <Link key={design.id} href={design.path}>
+                <Card className="bg-zinc-900/50 border-zinc-800 hover:border-cyan-500/50 transition-all cursor-pointer group overflow-hidden h-full">
+                  <div className={`h-40 ${design.preview} relative border-b border-zinc-800`}>
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className={`w-20 h-20 rounded-2xl bg-gradient-to-br ${design.accent} opacity-80 group-hover:scale-110 transition-transform`} />
+                    </div>
+                    <Badge className="absolute top-2 right-2 bg-gradient-to-r from-cyan-500 to-pink-500 text-white border-0">COOL</Badge>
+                  </div>
+                  <CardHeader>
+                    <div className="flex items-center gap-2">
+                      <span className="text-2xl font-bold text-zinc-500">{String(design.id).padStart(2, '0')}</span>
+                      <CardTitle className="text-white">{design.name}</CardTitle>
+                    </div>
+                    <CardDescription className="text-zinc-400">
+                      {design.description}
+                    </CardDescription>
+                  </CardHeader>
+                </Card>
+              </Link>
+            ))}
+          </div>
         </div>
 
         {/* New Designs Section */}
@@ -140,7 +198,7 @@ export default function DesignsPage() {
             以前のデザイン（テック系）
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {designs.filter(d => !d.isNew).map((design) => (
+            {designs.filter(d => !d.isNew && !d.isCool).map((design) => (
               <Link key={design.id} href={design.path}>
                 <Card className="bg-zinc-900/30 border-zinc-800/50 hover:border-zinc-700 transition-all cursor-pointer group overflow-hidden h-full opacity-70 hover:opacity-100">
                   <div className={`h-32 ${design.preview} relative`}>
