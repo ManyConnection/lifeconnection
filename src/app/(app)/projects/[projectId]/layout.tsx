@@ -1,5 +1,4 @@
 import { createClient } from "@/lib/supabase/server";
-import { ProjectHeader } from "@/components/layout/project-header";
 import { notFound } from "next/navigation";
 
 export default async function ProjectLayout({
@@ -22,10 +21,5 @@ export default async function ProjectLayout({
     return notFound();
   }
 
-  return (
-    <div>
-      <ProjectHeader project={project} />
-      <div className="p-6 lg:p-8">{children}</div>
-    </div>
-  );
+  return <div>{children}</div>;
 }

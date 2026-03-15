@@ -5,20 +5,37 @@ import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
   FolderKanban,
+  List,
+  Columns3,
+  GanttChart,
+  Settings,
   Menu,
   X,
   Heart,
+  Plus,
 } from "lucide-react";
 import { useState } from "react";
 
-const navItems = [
+const globalNav = [
   { href: "/dashboard", label: "ダッシュボード", icon: LayoutDashboard },
-  { href: "/projects", label: "プロジェクト", icon: FolderKanban },
+  { href: "/projects", label: "プロジェクト一覧", icon: FolderKanban },
+];
+
+const projectNav = [
+  { href: "tasks", label: "タスク", icon: List },
+  { href: "board", label: "ボード", icon: Columns3 },
+  { href: "gantt", label: "ガントチャート", icon: GanttChart },
+  { href: "settings", label: "設定", icon: Settings },
 ];
 
 export function AppSidebar() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  // Detect if we're inside a project
+  const projectMatch = pathname.match(/^\/projects\/([^/]+)/);
+  const projectId = projectMatch?.[1];
+  const isInProject = !!projectId && projectId !== "new";
 
   return (
     <>
@@ -45,7 +62,7 @@ export function AppSidebar() {
         }`}
       >
         {/* Logo */}
-        <div className="px-5 pt-7 pb-8">
+        <div className="px-5 pt-7 pb-6">
           <Link href="/dashboard" className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-sky-400 to-teal-400 flex items-center justify-center shadow-lg shadow-sky-200/60">
               <Heart size={18} className="text-white fill-white" />
@@ -61,30 +78,71 @@ export function AppSidebar() {
           </Link>
         </div>
 
-        {/* Navigation */}
-        <nav className="px-3 space-y-1.5">
+        <nav className="px-3 space-y-1">
+          {/* Global nav */}
           <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-widest px-3 mb-2">
             Menu
           </p>
-          {navItems.map((item) => {
+          {globalNav.map((item) => {
             const isActive =
-              pathname === item.href || pathname.startsWith(item.href + "/");
+              item.href === "/projects"
+                ? pathname === "/projects"
+                : pathname === item.href || pathname.startsWith(item.href + "/");
             return (
               <Link
                 key={item.href}
                 href={item.href}
                 onClick={() => setMobileOpen(false)}
-                className={`flex items-center gap-3 px-4 py-3 rounded-2xl text-[13px] font-semibold transition-all cursor-pointer ${
-                  isActive
+                className={`flex items-center gap-3 px-4 py-2.5 rounded-2xl text-[13px] font-semibold transition-all cursor-pointer ${
+                  isActive && !isInProject
                     ? "bg-gradient-to-r from-sky-50 to-teal-50 text-sky-600 shadow-sm"
                     : "text-gray-400 hover:text-gray-700 hover:bg-gray-50"
                 }`}
               >
-                <item.icon size={18} strokeWidth={isActive ? 2.5 : 2} />
+                <item.icon size={18} strokeWidth={isActive && !isInProject ? 2.5 : 2} />
                 {item.label}
               </Link>
             );
           })}
+
+          {/* Project nav - only when inside a project */}
+          {isInProject && (
+            <>
+              <div className="border-t border-gray-100 my-4" />
+              <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-widest px-3 mb-2">
+                Views
+              </p>
+              {projectNav.map((item) => {
+                const fullPath = `/projects/${projectId}/${item.href}`;
+                const isActive = pathname.startsWith(fullPath);
+                return (
+                  <Link
+                    key={item.href}
+                    href={fullPath}
+                    onClick={() => setMobileOpen(false)}
+                    className={`flex items-center gap-3 px-4 py-2.5 rounded-2xl text-[13px] font-semibold transition-all cursor-pointer ${
+                      isActive
+                        ? "bg-gradient-to-r from-sky-50 to-teal-50 text-sky-600 shadow-sm"
+                        : "text-gray-400 hover:text-gray-700 hover:bg-gray-50"
+                    }`}
+                  >
+                    <item.icon size={18} strokeWidth={isActive ? 2.5 : 2} />
+                    {item.label}
+                  </Link>
+                );
+              })}
+
+              {/* Quick add task */}
+              <Link
+                href={`/projects/${projectId}/tasks/new`}
+                onClick={() => setMobileOpen(false)}
+                className="flex items-center gap-3 px-4 py-2.5 rounded-2xl text-[13px] font-semibold text-gray-400 hover:text-sky-500 hover:bg-sky-50/50 transition-all cursor-pointer mt-2"
+              >
+                <Plus size={18} />
+                タスク追加
+              </Link>
+            </>
+          )}
         </nav>
       </aside>
     </>
