@@ -24,13 +24,13 @@ export default async function DashboardPage() {
           title="Total Tasks"
           value={data.totalTasks}
           icon={<ListTodo size={20} />}
-          color="pink"
+          color="sky"
         />
         <KpiCard
           title="In Progress"
           value={data.inProgressTasks}
           icon={<Clock size={20} />}
-          color="violet"
+          color="teal"
         />
         <KpiCard
           title="Completion Rate"
@@ -48,7 +48,7 @@ export default async function DashboardPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Status Distribution */}
-        <div className="bg-white/70 backdrop-blur-sm border border-pink-100 rounded-2xl p-6 shadow-sm">
+        <div className="bg-white/70 backdrop-blur-sm border border-sky-100 rounded-2xl p-6 shadow-sm">
           <h2 className="text-sm font-semibold text-gray-600 mb-4">
             Status Distribution
           </h2>
@@ -56,7 +56,7 @@ export default async function DashboardPage() {
         </div>
 
         {/* Project Progress */}
-        <div className="bg-white/70 backdrop-blur-sm border border-pink-100 rounded-2xl p-6 shadow-sm">
+        <div className="bg-white/70 backdrop-blur-sm border border-sky-100 rounded-2xl p-6 shadow-sm">
           <h2 className="text-sm font-semibold text-gray-600 mb-4">
             Project Progress
           </h2>
@@ -71,14 +71,14 @@ export default async function DashboardPage() {
                   className="block group"
                 >
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-sm text-gray-700 group-hover:text-pink-600 transition-colors">
+                    <span className="text-sm text-gray-700 group-hover:text-sky-600 transition-colors">
                       {p.name}
                     </span>
                     <span className="text-xs text-gray-400">
                       {p.doneTasks}/{p.totalTasks}
                     </span>
                   </div>
-                  <div className="h-2 bg-pink-100 rounded-full overflow-hidden">
+                  <div className="h-2 bg-sky-100 rounded-full overflow-hidden">
                     <div
                       className="h-full rounded-full transition-all"
                       style={{
@@ -94,7 +94,7 @@ export default async function DashboardPage() {
         </div>
 
         {/* Completion Ring */}
-        <div className="bg-white/70 backdrop-blur-sm border border-pink-100 rounded-2xl p-6 shadow-sm flex flex-col items-center justify-center">
+        <div className="bg-white/70 backdrop-blur-sm border border-sky-100 rounded-2xl p-6 shadow-sm flex flex-col items-center justify-center">
           <h2 className="text-sm font-semibold text-gray-600 mb-4">
             Overall Completion
           </h2>

@@ -38,11 +38,11 @@ export function BoardColumn({
       ref={setNodeRef}
       className={`flex flex-col min-h-[300px] w-72 shrink-0 rounded-2xl border transition-all ${
         isOver
-          ? "bg-pink-50 border-pink-300 shadow-sm"
-          : "bg-white/50 border-pink-100"
+          ? "bg-sky-50 border-sky-300 shadow-sm"
+          : "bg-white/50 border-sky-100"
       }`}
     >
-      <div className="flex items-center gap-2 px-4 py-3 border-b border-pink-100">
+      <div className="flex items-center gap-2 px-4 py-3 border-b border-sky-100">
         <span className={`w-2 h-2 rounded-full ${config.dotColor}`} />
         <span className={`text-sm font-medium ${config.color}`}>
           {config.label}

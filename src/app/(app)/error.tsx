@@ -13,7 +13,7 @@ export default function Error({
       <p className="text-gray-500 mb-6 text-sm">{error.message}</p>
       <button
         onClick={reset}
-        className="px-4 py-2 rounded-xl bg-gradient-to-r from-pink-500 to-rose-500 text-white text-sm font-medium shadow-md shadow-pink-200 cursor-pointer"
+        className="px-4 py-2 rounded-xl bg-gradient-to-r from-sky-500 to-cyan-500 text-white text-sm font-medium shadow-md shadow-sky-200 cursor-pointer"
       >
         Try again
       </button>

@@ -37,11 +37,11 @@ export function TaskListRow({
   };
 
   return (
-    <div className="grid grid-cols-[1fr_120px_100px_120px_100px] gap-2 px-4 py-3 border-b border-pink-100 hover:bg-pink-50/30 transition-colors items-center">
+    <div className="grid grid-cols-[1fr_120px_100px_120px_100px] gap-2 px-4 py-3 border-b border-sky-100 hover:bg-sky-50/30 transition-colors items-center">
       <div className="min-w-0">
         <Link
           href={`/projects/${projectId}/tasks/${task.id}`}
-          className="text-sm text-gray-700 hover:text-pink-600 transition-colors truncate block cursor-pointer"
+          className="text-sm text-gray-700 hover:text-sky-600 transition-colors truncate block cursor-pointer"
         >
           <span className="text-gray-400 mr-2">#{task.task_number}</span>
           {task.title}
@@ -87,7 +87,7 @@ export function TaskListRow({
       <div>
         {task.assignee ? (
           <div className="flex items-center gap-1.5">
-            <div className="w-6 h-6 rounded-full bg-gradient-to-br from-pink-400 to-rose-500 flex items-center justify-center text-[10px] text-white shrink-0">
+            <div className="w-6 h-6 rounded-full bg-gradient-to-br from-sky-400 to-cyan-500 flex items-center justify-center text-[10px] text-white shrink-0">
               {task.assignee.display_name.charAt(0).toUpperCase()}
             </div>
             <span className="text-xs text-gray-500 truncate">

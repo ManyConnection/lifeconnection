@@ -30,8 +30,8 @@ export function TaskList({
   }
 
   return (
-    <div className="bg-white/70 backdrop-blur-sm border border-pink-100 rounded-2xl overflow-hidden shadow-sm">
-      <div className="grid grid-cols-[1fr_120px_100px_120px_100px] gap-2 px-4 py-3 text-xs font-medium text-gray-400 border-b border-pink-100">
+    <div className="bg-white/70 backdrop-blur-sm border border-sky-100 rounded-2xl overflow-hidden shadow-sm">
+      <div className="grid grid-cols-[1fr_120px_100px_120px_100px] gap-2 px-4 py-3 text-xs font-medium text-gray-400 border-b border-sky-100">
         <span>Task</span>
         <span>Status</span>
         <span>Priority</span>

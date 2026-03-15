@@ -13,7 +13,7 @@ export function ProgressRing({ percentage }: { percentage: number }) {
           cy="70"
           r={radius}
           fill="none"
-          stroke="rgba(236,72,153,0.1)"
+          stroke="rgba(14,165,233,0.1)"
           strokeWidth="8"
         />
         <circle
@@ -30,8 +30,8 @@ export function ProgressRing({ percentage }: { percentage: number }) {
         />
         <defs>
           <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#ec4899" />
-            <stop offset="100%" stopColor="#f43f5e" />
+            <stop offset="0%" stopColor="#0ea5e9" />
+            <stop offset="100%" stopColor="#14b8a6" />
           </linearGradient>
         </defs>
       </svg>

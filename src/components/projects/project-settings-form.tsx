@@ -24,7 +24,7 @@ export function ProjectSettingsForm({ project, members, labels }: Props) {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [newLabelName, setNewLabelName] = useState("");
-  const [newLabelColor, setNewLabelColor] = useState("#ec4899");
+  const [newLabelColor, setNewLabelColor] = useState("#0ea5e9");
 
   const {
     register,
@@ -83,7 +83,7 @@ export function ProjectSettingsForm({ project, members, labels }: Props) {
   return (
     <div className="space-y-8">
       {/* Project Settings */}
-      <div className="bg-white/70 backdrop-blur-sm border border-pink-100 rounded-2xl p-6 shadow-sm">
+      <div className="bg-white/70 backdrop-blur-sm border border-sky-100 rounded-2xl p-6 shadow-sm">
         <h2 className="text-lg font-semibold font-heading text-gray-800 mb-4">Project Settings</h2>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           {error && (
@@ -95,7 +95,7 @@ export function ProjectSettingsForm({ project, members, labels }: Props) {
             <label className="block text-sm font-medium text-gray-600 mb-1.5">名前</label>
             <input
               {...register("name")}
-              className="w-full px-4 py-2.5 rounded-xl bg-white border border-pink-200 text-gray-800 focus:outline-none focus:border-pink-400 focus:ring-1 focus:ring-pink-400"
+              className="w-full px-4 py-2.5 rounded-xl bg-white border border-sky-200 text-gray-800 focus:outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-400"
             />
             {errors.name && <p className="text-rose-500 text-xs mt-1">{errors.name.message}</p>}
           </div>
@@ -103,7 +103,7 @@ export function ProjectSettingsForm({ project, members, labels }: Props) {
             <label className="block text-sm font-medium text-gray-600 mb-1.5">キー</label>
             <input
               {...register("key")}
-              className="w-full px-4 py-2.5 rounded-xl bg-white border border-pink-200 text-gray-800 focus:outline-none focus:border-pink-400 focus:ring-1 focus:ring-pink-400 uppercase"
+              className="w-full px-4 py-2.5 rounded-xl bg-white border border-sky-200 text-gray-800 focus:outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-400 uppercase"
             />
             {errors.key && <p className="text-rose-500 text-xs mt-1">{errors.key.message}</p>}
           </div>
@@ -112,7 +112,7 @@ export function ProjectSettingsForm({ project, members, labels }: Props) {
             <textarea
               {...register("description")}
               rows={3}
-              className="w-full px-4 py-2.5 rounded-xl bg-white border border-pink-200 text-gray-800 focus:outline-none focus:border-pink-400 focus:ring-1 focus:ring-pink-400 resize-none"
+              className="w-full px-4 py-2.5 rounded-xl bg-white border border-sky-200 text-gray-800 focus:outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-400 resize-none"
             />
           </div>
           <div>
@@ -125,7 +125,7 @@ export function ProjectSettingsForm({ project, members, labels }: Props) {
                   onClick={() => setValue("color", color)}
                   className={`w-8 h-8 rounded-lg transition-all cursor-pointer ${
                     selectedColor === color
-                      ? "ring-2 ring-pink-400 ring-offset-2 ring-offset-white scale-110"
+                      ? "ring-2 ring-sky-400 ring-offset-2 ring-offset-white scale-110"
                       : "hover:scale-110"
                   }`}
                   style={{ backgroundColor: color }}
@@ -136,7 +136,7 @@ export function ProjectSettingsForm({ project, members, labels }: Props) {
           <button
             type="submit"
             disabled={loading}
-            className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-pink-500 to-rose-500 text-white font-medium hover:from-pink-600 hover:to-rose-600 transition-all disabled:opacity-50 shadow-md shadow-pink-200 cursor-pointer"
+            className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-sky-500 to-cyan-500 text-white font-medium hover:from-sky-600 hover:to-cyan-600 transition-all disabled:opacity-50 shadow-md shadow-sky-200 cursor-pointer"
           >
             {loading ? "更新中..." : "更新"}
           </button>
@@ -144,13 +144,13 @@ export function ProjectSettingsForm({ project, members, labels }: Props) {
       </div>
 
       {/* Members */}
-      <div className="bg-white/70 backdrop-blur-sm border border-pink-100 rounded-2xl p-6 shadow-sm">
+      <div className="bg-white/70 backdrop-blur-sm border border-sky-100 rounded-2xl p-6 shadow-sm">
         <h2 className="text-lg font-semibold font-heading text-gray-800 mb-4">Members</h2>
         <div className="space-y-2">
           {members.map((m) => (
-            <div key={m.id} className="flex items-center justify-between py-2 px-3 rounded-xl bg-pink-50/50">
+            <div key={m.id} className="flex items-center justify-between py-2 px-3 rounded-xl bg-sky-50/50">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-pink-400 to-rose-500 flex items-center justify-center text-xs text-white font-medium">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-sky-400 to-cyan-500 flex items-center justify-center text-xs text-white font-medium">
                   {(m.profiles?.display_name ?? "?").charAt(0).toUpperCase()}
                 </div>
                 <span className="text-sm text-gray-700">{m.profiles?.display_name}</span>
@@ -162,13 +162,13 @@ export function ProjectSettingsForm({ project, members, labels }: Props) {
       </div>
 
       {/* Labels */}
-      <div className="bg-white/70 backdrop-blur-sm border border-pink-100 rounded-2xl p-6 shadow-sm">
+      <div className="bg-white/70 backdrop-blur-sm border border-sky-100 rounded-2xl p-6 shadow-sm">
         <h2 className="text-lg font-semibold font-heading text-gray-800 mb-4">Labels</h2>
         <div className="space-y-2 mb-4">
           {labels.map((label) => (
             <div
               key={label.id}
-              className="flex items-center justify-between py-2 px-3 rounded-xl bg-pink-50/50"
+              className="flex items-center justify-between py-2 px-3 rounded-xl bg-sky-50/50"
             >
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 rounded-full" style={{ backgroundColor: label.color }} />
@@ -188,18 +188,18 @@ export function ProjectSettingsForm({ project, members, labels }: Props) {
             type="color"
             value={newLabelColor}
             onChange={(e) => setNewLabelColor(e.target.value)}
-            className="w-10 h-10 rounded-lg border border-pink-200 bg-transparent cursor-pointer"
+            className="w-10 h-10 rounded-lg border border-sky-200 bg-transparent cursor-pointer"
           />
           <input
             value={newLabelName}
             onChange={(e) => setNewLabelName(e.target.value)}
             placeholder="新しいラベル名"
-            className="flex-1 px-4 py-2.5 rounded-xl bg-white border border-pink-200 text-gray-700 placeholder:text-gray-400 focus:outline-none focus:border-pink-400"
+            className="flex-1 px-4 py-2.5 rounded-xl bg-white border border-sky-200 text-gray-700 placeholder:text-gray-400 focus:outline-none focus:border-sky-400"
             onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), handleAddLabel())}
           />
           <button
             onClick={handleAddLabel}
-            className="px-3 py-2.5 rounded-xl bg-pink-50 border border-pink-200 text-pink-500 hover:bg-pink-100 transition-colors cursor-pointer"
+            className="px-3 py-2.5 rounded-xl bg-sky-50 border border-sky-200 text-sky-500 hover:bg-sky-100 transition-colors cursor-pointer"
           >
             <Plus size={16} />
           </button>

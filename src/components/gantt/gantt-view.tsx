@@ -121,22 +121,20 @@ export function GanttView({
           </p>
         </div>
       ) : (
-        <div className="bg-white/70 backdrop-blur-sm border border-pink-100 rounded-2xl overflow-hidden shadow-sm">
+        <div className="bg-white/70 backdrop-blur-sm border border-sky-100 rounded-2xl overflow-hidden shadow-sm">
           <div className="overflow-x-auto">
             <div style={{ minWidth: totalWidth + 280 }}>
               {/* Header */}
-              <div className="flex border-b border-pink-100">
-                <div className="w-[280px] shrink-0 px-4 py-2 text-xs font-medium text-gray-400 border-r border-pink-100">
+              <div className="flex border-b border-sky-100">
+                <div className="w-[280px] shrink-0 px-4 py-2 text-xs font-medium text-gray-400 border-r border-sky-100">
                   Task
                 </div>
                 <div className="flex">
                   {columns.map((col, i) => (
                     <div
                       key={i}
-                      className={`text-center border-r border-pink-50 py-2 ${
-                        isToday(col)
-                          ? "bg-pink-50"
-                          : ""
+                      className={`text-center border-r border-sky-50 py-2 ${
+                        isToday(col) ? "bg-sky-50" : ""
                       }`}
                       style={{ width: colWidth }}
                     >
@@ -164,9 +162,9 @@ export function GanttView({
                 return (
                   <div
                     key={task.id}
-                    className="flex border-b border-pink-50 hover:bg-pink-50/30"
+                    className="flex border-b border-sky-50 hover:bg-sky-50/30"
                   >
-                    <div className="w-[280px] shrink-0 px-4 py-3 text-sm text-gray-700 border-r border-pink-100 flex items-center gap-2 truncate">
+                    <div className="w-[280px] shrink-0 px-4 py-3 text-sm text-gray-700 border-r border-sky-100 flex items-center gap-2 truncate">
                       <span className={`w-2 h-2 rounded-full shrink-0 ${config.dotColor}`} />
                       <span className="text-gray-400 text-xs">
                         #{task.task_number}
@@ -196,14 +194,8 @@ export function GanttView({
                 const pred = tasks.find((t) => t.id === dep.predecessor_id);
                 const succ = tasks.find((t) => t.id === dep.successor_id);
                 if (!pred?.due_date || !succ?.start_date) return null;
-                const predBar = getBarPosition(
-                  pred.start_date!,
-                  pred.due_date
-                );
-                const succBar = getBarPosition(
-                  succ.start_date,
-                  succ.due_date!
-                );
+                const predBar = getBarPosition(pred.start_date!, pred.due_date);
+                const succBar = getBarPosition(succ.start_date, succ.due_date!);
                 const predIdx = tasks.indexOf(pred);
                 const succIdx = tasks.indexOf(succ);
                 const x1 = 280 + predBar.left + predBar.width;
@@ -216,7 +208,7 @@ export function GanttView({
                     <path
                       d={`M${x1},${y1} C${x1 + 20},${y1} ${x2 - 20},${y2} ${x2},${y2}`}
                       fill="none"
-                      stroke="rgba(236,72,153,0.4)"
+                      stroke="rgba(14,165,233,0.4)"
                       strokeWidth={1.5}
                       markerEnd="url(#arrowhead)"
                     />
@@ -234,7 +226,7 @@ export function GanttView({
                 >
                   <polygon
                     points="0 0, 6 3, 0 6"
-                    fill="rgba(236,72,153,0.6)"
+                    fill="rgba(14,165,233,0.6)"
                   />
                 </marker>
               </defs>

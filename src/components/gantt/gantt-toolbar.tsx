@@ -24,8 +24,8 @@ export function GanttToolbar({
           onClick={() => onZoomChange(level.value)}
           className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors cursor-pointer ${
             zoom === level.value
-              ? "bg-pink-50 text-pink-600 border border-pink-200"
-              : "bg-white text-gray-500 border border-pink-100 hover:bg-pink-50/50"
+              ? "bg-sky-50 text-sky-600 border border-sky-200"
+              : "bg-white text-gray-500 border border-sky-100 hover:bg-sky-50/50"
           }`}
         >
           {level.label}

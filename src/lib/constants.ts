@@ -20,9 +20,9 @@ export const TASK_STATUSES: {
   {
     value: "in_progress",
     label: "In Progress",
-    color: "text-pink-600",
-    bgColor: "bg-pink-50 border-pink-200",
-    dotColor: "bg-pink-400",
+    color: "text-sky-600",
+    bgColor: "bg-sky-50 border-sky-200",
+    dotColor: "bg-sky-400",
   },
   {
     value: "in_review",
@@ -80,8 +80,8 @@ export const TASK_PRIORITIES: {
 ];
 
 export const PROJECT_COLORS = [
-  "#ec4899", // pink
-  "#f43f5e", // rose
+  "#0ea5e9", // sky
+  "#14b8a6", // teal
   "#8b5cf6", // violet
   "#06b6d4", // cyan
   "#10b981", // emerald

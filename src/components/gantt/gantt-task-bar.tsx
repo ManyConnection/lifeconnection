@@ -15,7 +15,7 @@ interface Props {
 
 const statusGradients: Record<string, string> = {
   open: "from-gray-400 to-gray-500",
-  in_progress: "from-pink-400 to-pink-500",
+  in_progress: "from-sky-400 to-sky-500",
   in_review: "from-violet-400 to-violet-500",
   done: "from-emerald-400 to-emerald-500",
   closed: "from-gray-500 to-gray-600",

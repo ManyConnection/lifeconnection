@@ -18,8 +18,8 @@ export function UserMenu({
 }) {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="flex items-center gap-2 px-3 py-1.5 rounded-xl hover:bg-pink-50 transition-colors cursor-pointer">
-          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-pink-400 to-rose-500 flex items-center justify-center overflow-hidden shadow-sm">
+      <DropdownMenuTrigger className="flex items-center gap-2 px-3 py-1.5 rounded-xl hover:bg-sky-50 transition-colors cursor-pointer">
+          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-sky-400 to-cyan-500 flex items-center justify-center overflow-hidden shadow-sm">
             {avatarUrl ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img src={avatarUrl} alt="" className="w-full h-full object-cover" />
@@ -33,11 +33,11 @@ export function UserMenu({
       </DropdownMenuTrigger>
       <DropdownMenuContent
         align="end"
-        className="bg-white border-pink-100 text-gray-800"
+        className="bg-white border-sky-100 text-gray-800"
       >
         <DropdownMenuItem
           onClick={() => logout()}
-          className="text-gray-600 focus:bg-pink-50 focus:text-pink-600 cursor-pointer"
+          className="text-gray-600 focus:bg-sky-50 focus:text-sky-600 cursor-pointer"
         >
           <LogOut size={16} className="mr-2" />
           ログアウト

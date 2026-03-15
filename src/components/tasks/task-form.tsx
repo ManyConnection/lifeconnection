@@ -93,7 +93,7 @@ export function TaskForm({ projectId, members, labels, task }: Props) {
   };
 
   const inputClass =
-    "w-full px-4 py-2.5 rounded-xl bg-white border border-pink-200 text-gray-800 placeholder:text-gray-400 focus:outline-none focus:border-pink-400 focus:ring-1 focus:ring-pink-400";
+    "w-full px-4 py-2.5 rounded-xl bg-white border border-sky-200 text-gray-800 placeholder:text-gray-400 focus:outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-400";
   const selectClass = `${inputClass} appearance-none cursor-pointer`;
 
   return (
@@ -177,8 +177,8 @@ export function TaskForm({ projectId, members, labels, task }: Props) {
                 onClick={() => toggleLabel(label.id)}
                 className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all border cursor-pointer ${
                   selectedLabels.includes(label.id)
-                    ? "border-pink-300 bg-pink-50 text-pink-700"
-                    : "border-pink-100 bg-white text-gray-500 hover:bg-pink-50"
+                    ? "border-sky-300 bg-sky-50 text-sky-700"
+                    : "border-sky-100 bg-white text-gray-500 hover:bg-sky-50"
                 }`}
               >
                 <div
@@ -195,7 +195,7 @@ export function TaskForm({ projectId, members, labels, task }: Props) {
       <button
         type="submit"
         disabled={loading}
-        className="w-full py-2.5 rounded-xl bg-gradient-to-r from-pink-500 to-rose-500 text-white font-medium hover:from-pink-600 hover:to-rose-600 transition-all disabled:opacity-50 shadow-md shadow-pink-200 cursor-pointer"
+        className="w-full py-2.5 rounded-xl bg-gradient-to-r from-sky-500 to-cyan-500 text-white font-medium hover:from-sky-600 hover:to-cyan-600 transition-all disabled:opacity-50 shadow-md shadow-sky-200 cursor-pointer"
       >
         {loading ? (task ? "更新中..." : "作成中...") : task ? "タスクを更新" : "タスクを作成"}
       </button>

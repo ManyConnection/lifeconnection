@@ -29,7 +29,7 @@ export function StatusChart({
                 {count} ({percentage}%)
               </span>
             </div>
-            <div className="h-1.5 bg-pink-100 rounded-full overflow-hidden">
+            <div className="h-1.5 bg-sky-100 rounded-full overflow-hidden">
               <div
                 className={`h-full rounded-full ${status.dotColor} transition-all`}
                 style={{ width: `${percentage}%` }}

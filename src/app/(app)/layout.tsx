@@ -15,7 +15,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       <Toaster
         theme="light"
         toastOptions={{
-          className: "bg-white border-pink-100 text-gray-800",
+          className: "bg-white border-sky-100 text-gray-800",
         }}
       />
     </div>

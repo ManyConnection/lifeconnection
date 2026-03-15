@@ -48,7 +48,7 @@ export function ProjectForm() {
         </label>
         <input
           {...register("name")}
-          className="w-full px-4 py-2.5 rounded-xl bg-white border border-pink-200 text-gray-800 placeholder:text-gray-400 focus:outline-none focus:border-pink-400 focus:ring-1 focus:ring-pink-400"
+          className="w-full px-4 py-2.5 rounded-xl bg-white border border-sky-200 text-gray-800 placeholder:text-gray-400 focus:outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-400"
           placeholder="My Project"
         />
         {errors.name && (
@@ -62,7 +62,7 @@ export function ProjectForm() {
         </label>
         <input
           {...register("key")}
-          className="w-full px-4 py-2.5 rounded-xl bg-white border border-pink-200 text-gray-800 placeholder:text-gray-400 focus:outline-none focus:border-pink-400 focus:ring-1 focus:ring-pink-400 uppercase"
+          className="w-full px-4 py-2.5 rounded-xl bg-white border border-sky-200 text-gray-800 placeholder:text-gray-400 focus:outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-400 uppercase"
           placeholder="PROJ"
           maxLength={8}
         />
@@ -81,7 +81,7 @@ export function ProjectForm() {
         <textarea
           {...register("description")}
           rows={3}
-          className="w-full px-4 py-2.5 rounded-xl bg-white border border-pink-200 text-gray-800 placeholder:text-gray-400 focus:outline-none focus:border-pink-400 focus:ring-1 focus:ring-pink-400 resize-none"
+          className="w-full px-4 py-2.5 rounded-xl bg-white border border-sky-200 text-gray-800 placeholder:text-gray-400 focus:outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-400 resize-none"
           placeholder="プロジェクトの説明（任意）"
         />
       </div>
@@ -98,7 +98,7 @@ export function ProjectForm() {
               onClick={() => setValue("color", color)}
               className={`w-8 h-8 rounded-lg transition-all cursor-pointer ${
                 selectedColor === color
-                  ? "ring-2 ring-pink-400 ring-offset-2 ring-offset-white scale-110"
+                  ? "ring-2 ring-sky-400 ring-offset-2 ring-offset-white scale-110"
                   : "hover:scale-110"
               }`}
               style={{ backgroundColor: color }}
@@ -110,7 +110,7 @@ export function ProjectForm() {
       <button
         type="submit"
         disabled={loading}
-        className="w-full py-2.5 rounded-xl bg-gradient-to-r from-pink-500 to-rose-500 text-white font-medium hover:from-pink-600 hover:to-rose-600 transition-all disabled:opacity-50 shadow-md shadow-pink-200 cursor-pointer"
+        className="w-full py-2.5 rounded-xl bg-gradient-to-r from-sky-500 to-cyan-500 text-white font-medium hover:from-sky-600 hover:to-cyan-600 transition-all disabled:opacity-50 shadow-md shadow-sky-200 cursor-pointer"
       >
         {loading ? "作成中..." : "プロジェクトを作成"}
       </button>

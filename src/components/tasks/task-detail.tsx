@@ -72,7 +72,7 @@ export function TaskDetail({ task, comments, projectId, projectKey }: Props) {
       <div className="flex items-center gap-4 mb-6">
         <Link
           href={`/projects/${projectId}/tasks`}
-          className="text-gray-400 hover:text-pink-500 transition-colors cursor-pointer"
+          className="text-gray-400 hover:text-sky-500 transition-colors cursor-pointer"
         >
           <ArrowLeft size={20} />
         </Link>
@@ -84,13 +84,13 @@ export function TaskDetail({ task, comments, projectId, projectKey }: Props) {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Main content */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="bg-white/70 backdrop-blur-sm border border-pink-100 rounded-2xl p-6 shadow-sm">
+          <div className="bg-white/70 backdrop-blur-sm border border-sky-100 rounded-2xl p-6 shadow-sm">
             <div className="flex items-start justify-between mb-4">
               <h1 className="text-xl font-bold font-heading text-gray-800">{task.title}</h1>
               <div className="flex gap-2">
                 <Link
                   href={`/projects/${projectId}/tasks/${task.id}/edit`}
-                  className="p-2 rounded-lg hover:bg-pink-50 text-gray-400 hover:text-pink-500 transition-colors cursor-pointer"
+                  className="p-2 rounded-lg hover:bg-sky-50 text-gray-400 hover:text-sky-500 transition-colors cursor-pointer"
                 >
                   <Pencil size={16} />
                 </Link>
@@ -111,7 +111,7 @@ export function TaskDetail({ task, comments, projectId, projectKey }: Props) {
 
           {/* Subtasks */}
           {task.subtasks.length > 0 && (
-            <div className="bg-white/70 backdrop-blur-sm border border-pink-100 rounded-2xl p-6 shadow-sm">
+            <div className="bg-white/70 backdrop-blur-sm border border-sky-100 rounded-2xl p-6 shadow-sm">
               <h2 className="text-sm font-semibold text-gray-600 mb-3">
                 Subtasks ({task.subtasks.length})
               </h2>
@@ -120,7 +120,7 @@ export function TaskDetail({ task, comments, projectId, projectKey }: Props) {
                   <Link
                     key={sub.id}
                     href={`/projects/${projectId}/tasks/${sub.id}`}
-                    className="flex items-center justify-between py-2 px-3 rounded-xl hover:bg-pink-50 transition-colors cursor-pointer"
+                    className="flex items-center justify-between py-2 px-3 rounded-xl hover:bg-sky-50 transition-colors cursor-pointer"
                   >
                     <span className="text-sm text-gray-700">
                       <span className="text-gray-400">#{sub.task_number}</span>{" "}
@@ -134,7 +134,7 @@ export function TaskDetail({ task, comments, projectId, projectKey }: Props) {
           )}
 
           {/* Comments */}
-          <div className="bg-white/70 backdrop-blur-sm border border-pink-100 rounded-2xl p-6 shadow-sm">
+          <div className="bg-white/70 backdrop-blur-sm border border-sky-100 rounded-2xl p-6 shadow-sm">
             <h2 className="text-sm font-semibold text-gray-600 mb-4">
               Comments ({comments.length})
             </h2>
@@ -148,13 +148,13 @@ export function TaskDetail({ task, comments, projectId, projectKey }: Props) {
 
         {/* Sidebar */}
         <div className="space-y-4">
-          <div className="bg-white/70 backdrop-blur-sm border border-pink-100 rounded-2xl p-5 space-y-4 shadow-sm">
+          <div className="bg-white/70 backdrop-blur-sm border border-sky-100 rounded-2xl p-5 space-y-4 shadow-sm">
             <div>
               <span className="text-xs text-gray-400 block mb-1">Status</span>
               <select
                 value={task.status}
                 onChange={(e) => handleStatusChange(e.target.value)}
-                className="w-full px-3 py-2 rounded-xl bg-white border border-pink-200 text-sm text-gray-700 focus:outline-none cursor-pointer"
+                className="w-full px-3 py-2 rounded-xl bg-white border border-sky-200 text-sm text-gray-700 focus:outline-none cursor-pointer"
               >
                 {TASK_STATUSES.map((s) => (
                   <option key={s.value} value={s.value}>
@@ -173,7 +173,7 @@ export function TaskDetail({ task, comments, projectId, projectKey }: Props) {
               <span className="text-xs text-gray-400 block mb-1">Assignee</span>
               {task.assignee ? (
                 <div className="flex items-center gap-2">
-                  <div className="w-6 h-6 rounded-full bg-gradient-to-br from-pink-400 to-rose-500 flex items-center justify-center text-[10px] text-white">
+                  <div className="w-6 h-6 rounded-full bg-gradient-to-br from-sky-400 to-cyan-500 flex items-center justify-center text-[10px] text-white">
                     {task.assignee.display_name.charAt(0).toUpperCase()}
                   </div>
                   <span className="text-sm text-gray-700">

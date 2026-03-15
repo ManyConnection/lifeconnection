@@ -19,7 +19,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
 
   return (
     <Link href={`/projects/${project.id}/tasks`} className="group block">
-      <div className="bg-white/70 backdrop-blur-sm border border-pink-100 rounded-2xl p-5 hover:border-pink-300 hover:shadow-md hover:-translate-y-0.5 transition-all">
+      <div className="bg-white/70 backdrop-blur-sm border border-sky-100 rounded-2xl p-5 hover:border-sky-300 hover:shadow-md hover:-translate-y-0.5 transition-all">
         <div className="flex items-start gap-3 mb-3">
           <div
             className="w-10 h-10 rounded-xl flex items-center justify-center text-white text-sm font-bold shrink-0 shadow-sm"
@@ -28,7 +28,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
             {project.key.substring(0, 2)}
           </div>
           <div className="min-w-0">
-            <h3 className="text-gray-800 font-semibold group-hover:text-pink-600 transition-colors truncate">
+            <h3 className="text-gray-800 font-semibold group-hover:text-sky-600 transition-colors truncate">
               {project.name}
             </h3>
             <p className="text-xs text-gray-400">{project.key}</p>

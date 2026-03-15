@@ -44,7 +44,7 @@ export function LoginForm() {
         <input
           type="email"
           {...register("email")}
-          className="w-full px-4 py-2.5 rounded-xl bg-white border border-pink-200 text-gray-800 placeholder:text-gray-400 focus:outline-none focus:border-pink-400 focus:ring-1 focus:ring-pink-400"
+          className="w-full px-4 py-2.5 rounded-xl bg-white border border-sky-200 text-gray-800 placeholder:text-gray-400 focus:outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-400"
           placeholder="you@example.com"
         />
         {errors.email && (
@@ -59,7 +59,7 @@ export function LoginForm() {
         <input
           type="password"
           {...register("password")}
-          className="w-full px-4 py-2.5 rounded-xl bg-white border border-pink-200 text-gray-800 placeholder:text-gray-400 focus:outline-none focus:border-pink-400 focus:ring-1 focus:ring-pink-400"
+          className="w-full px-4 py-2.5 rounded-xl bg-white border border-sky-200 text-gray-800 placeholder:text-gray-400 focus:outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-400"
           placeholder="••••••••"
         />
         {errors.password && (
@@ -70,14 +70,14 @@ export function LoginForm() {
       <button
         type="submit"
         disabled={loading}
-        className="w-full py-2.5 rounded-xl bg-gradient-to-r from-pink-500 to-rose-500 text-white font-medium hover:from-pink-600 hover:to-rose-600 transition-all disabled:opacity-50 shadow-md shadow-pink-200 cursor-pointer"
+        className="w-full py-2.5 rounded-xl bg-gradient-to-r from-sky-500 to-cyan-500 text-white font-medium hover:from-sky-600 hover:to-cyan-600 transition-all disabled:opacity-50 shadow-md shadow-sky-200 cursor-pointer"
       >
         {loading ? "ログイン中..." : "ログイン"}
       </button>
 
       <p className="text-center text-sm text-gray-500">
         アカウントをお持ちでない方は{" "}
-        <Link href="/auth/signup" className="text-pink-500 hover:text-pink-600">
+        <Link href="/auth/signup" className="text-sky-500 hover:text-sky-600">
           サインアップ
         </Link>
       </p>

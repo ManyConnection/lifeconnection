@@ -38,8 +38,8 @@ export function TaskCard({ task, projectId }: TaskCardProps) {
       style={style}
       {...attributes}
       {...listeners}
-      className={`bg-white border border-pink-100 rounded-xl p-3 cursor-grab active:cursor-grabbing hover:border-pink-300 hover:shadow-sm transition-all ${
-        isDragging ? "opacity-50 shadow-lg shadow-pink-200/50" : ""
+      className={`bg-white border border-sky-100 rounded-xl p-3 cursor-grab active:cursor-grabbing hover:border-sky-300 hover:shadow-sm transition-all ${
+        isDragging ? "opacity-50 shadow-lg shadow-sky-200/50" : ""
       }`}
     >
       <Link
@@ -71,7 +71,7 @@ export function TaskCard({ task, projectId }: TaskCardProps) {
         <div className="flex items-center justify-between mt-2">
           <TaskPriorityBadge priority={task.priority} />
           {task.assignee && (
-            <div className="w-6 h-6 rounded-full bg-gradient-to-br from-pink-400 to-rose-500 flex items-center justify-center text-[10px] text-white">
+            <div className="w-6 h-6 rounded-full bg-gradient-to-br from-sky-400 to-cyan-500 flex items-center justify-center text-[10px] text-white">
               {task.assignee.display_name.charAt(0).toUpperCase()}
             </div>
           )}

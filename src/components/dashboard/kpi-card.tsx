@@ -1,13 +1,13 @@
 const colorMap = {
-  pink: {
-    bg: "bg-pink-50",
-    border: "border-pink-200",
-    icon: "text-pink-500",
+  sky: {
+    bg: "bg-sky-50",
+    border: "border-sky-200",
+    icon: "text-sky-500",
   },
-  violet: {
-    bg: "bg-violet-50",
-    border: "border-violet-200",
-    icon: "text-violet-500",
+  teal: {
+    bg: "bg-teal-50",
+    border: "border-teal-200",
+    icon: "text-teal-500",
   },
   emerald: {
     bg: "bg-emerald-50",

@@ -48,7 +48,7 @@ export function TaskComments({
       {comments.map((comment) => (
         <div key={comment.id} className="group">
           <div className="flex items-start gap-3">
-            <div className="w-7 h-7 rounded-full bg-gradient-to-br from-pink-400 to-rose-500 flex items-center justify-center text-[10px] text-white shrink-0 mt-0.5">
+            <div className="w-7 h-7 rounded-full bg-gradient-to-br from-sky-400 to-cyan-500 flex items-center justify-center text-[10px] text-white shrink-0 mt-0.5">
               {(comment.user?.display_name ?? "?").charAt(0).toUpperCase()}
             </div>
             <div className="flex-1 min-w-0">
@@ -74,17 +74,17 @@ export function TaskComments({
         </div>
       ))}
 
-      <form onSubmit={handleSubmit} className="flex gap-2 pt-2 border-t border-pink-100">
+      <form onSubmit={handleSubmit} className="flex gap-2 pt-2 border-t border-sky-100">
         <input
           value={content}
           onChange={(e) => setContent(e.target.value)}
           placeholder="コメントを入力..."
-          className="flex-1 px-4 py-2 rounded-xl bg-white border border-pink-200 text-sm text-gray-700 placeholder:text-gray-400 focus:outline-none focus:border-pink-400"
+          className="flex-1 px-4 py-2 rounded-xl bg-white border border-sky-200 text-sm text-gray-700 placeholder:text-gray-400 focus:outline-none focus:border-sky-400"
         />
         <button
           type="submit"
           disabled={loading || !content.trim()}
-          className="px-3 py-2 rounded-xl bg-pink-50 text-pink-500 hover:bg-pink-100 transition-colors disabled:opacity-50 cursor-pointer"
+          className="px-3 py-2 rounded-xl bg-sky-50 text-sky-500 hover:bg-sky-100 transition-colors disabled:opacity-50 cursor-pointer"
         >
           <Send size={16} />
         </button>
