@@ -23,6 +23,7 @@ interface Task {
   id: string;
   task_number: number;
   title: string;
+  description: string;
   status: "open" | "in_progress" | "in_review" | "done" | "closed";
   priority: "low" | "medium" | "high" | "critical";
   start_date: string | null;
