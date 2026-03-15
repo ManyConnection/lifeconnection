@@ -5,6 +5,14 @@ import { revalidatePath } from "next/cache";
 import { taskSchema } from "@/lib/validations/task";
 import type { Database } from "@/lib/supabase/database.types";
 
+function revalidateProject(projectId: string) {
+  revalidatePath(`/projects/${projectId}/tasks`, "page");
+  revalidatePath(`/projects/${projectId}/board`, "page");
+  revalidatePath(`/projects/${projectId}/gantt`, "page");
+  revalidatePath(`/projects/${projectId}`, "layout");
+  revalidatePath("/dashboard", "page");
+}
+
 export async function createTask(
   projectId: string,
   formData: {
@@ -61,8 +69,7 @@ export async function createTask(
     );
   }
 
-  revalidatePath(`/projects/${projectId}`);
-  revalidatePath("/dashboard");
+  revalidateProject(projectId);
   return { success: true, data };
 }
 
@@ -117,8 +124,7 @@ export async function updateTask(
     }
   }
 
-  revalidatePath(`/projects/${projectId}`);
-  revalidatePath("/dashboard");
+  revalidateProject(projectId);
   return { success: true };
 }
 
@@ -137,8 +143,7 @@ export async function updateTaskStatus(
     return { error: "ステータスの更新に失敗しました" };
   }
 
-  revalidatePath(`/projects/${projectId}`);
-  revalidatePath("/dashboard");
+  revalidateProject(projectId);
   return { success: true };
 }
 
@@ -161,7 +166,7 @@ export async function updateTaskSortOrder(
     return { error: "並び順の更新に失敗しました" };
   }
 
-  revalidatePath(`/projects/${projectId}`);
+  revalidateProject(projectId);
   return { success: true };
 }
 
@@ -173,8 +178,7 @@ export async function deleteTask(taskId: string, projectId: string) {
     return { error: "タスクの削除に失敗しました" };
   }
 
-  revalidatePath(`/projects/${projectId}`);
-  revalidatePath("/dashboard");
+  revalidateProject(projectId);
   return { success: true };
 }
 
@@ -194,6 +198,6 @@ export async function updateTaskDates(
     return { error: "日付の更新に失敗しました" };
   }
 
-  revalidatePath(`/projects/${projectId}`);
+  revalidateProject(projectId);
   return { success: true };
 }
