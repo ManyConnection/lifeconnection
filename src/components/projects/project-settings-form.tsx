@@ -4,10 +4,10 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { projectSchema, type ProjectInput } from "@/lib/validations/project";
-import { updateProject, deleteProject } from "@/lib/actions/projects";
+import { updateProject, deleteProject, addProjectMember, removeProjectMember } from "@/lib/actions/projects";
 import { createLabel, deleteLabel } from "@/lib/actions/labels";
 import { PROJECT_COLORS } from "@/lib/constants";
-import { Trash2, Plus, X } from "lucide-react";
+import { Trash2, Plus, X, UserPlus } from "lucide-react";
 import { toast } from "sonner";
 
 interface Props {
@@ -20,11 +20,22 @@ interface Props {
   labels: { id: string; name: string; color: string }[];
 }
 
+const MEMBER_ROLES = [
+  { value: "admin", label: "管理者" },
+  { value: "member", label: "メンバー" },
+  { value: "viewer", label: "閲覧者" },
+] as const;
+
 export function ProjectSettingsForm({ project, members, labels }: Props) {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [newLabelName, setNewLabelName] = useState("");
   const [newLabelColor, setNewLabelColor] = useState("#0ea5e9");
+
+  // Member add state
+  const [memberSearch, setMemberSearch] = useState("");
+  const [memberRole, setMemberRole] = useState<"admin" | "member" | "viewer">("member");
+  const [memberLoading, setMemberLoading] = useState(false);
 
   const {
     register,
@@ -61,6 +72,29 @@ export function ProjectSettingsForm({ project, members, labels }: Props) {
     await deleteProject(project.id);
   };
 
+  const handleAddMember = async () => {
+    if (!memberSearch.trim()) return;
+    setMemberLoading(true);
+    const result = await addProjectMember(project.id, memberSearch.trim(), memberRole);
+    if (result?.error) {
+      toast.error(result.error);
+    } else {
+      setMemberSearch("");
+      toast.success("メンバーを追加しました");
+    }
+    setMemberLoading(false);
+  };
+
+  const handleRemoveMember = async (memberId: string, displayName: string) => {
+    if (!confirm(`${displayName} をプロジェクトから削除しますか？`)) return;
+    const result = await removeProjectMember(project.id, memberId);
+    if (result?.error) {
+      toast.error(result.error);
+    } else {
+      toast.success("メンバーを削除しました");
+    }
+  };
+
   const handleAddLabel = async () => {
     if (!newLabelName.trim()) return;
     const result = await createLabel(project.id, {
@@ -80,43 +114,36 @@ export function ProjectSettingsForm({ project, members, labels }: Props) {
     toast.success("ラベルを削除しました");
   };
 
+  const inputClass =
+    "w-full px-4 py-3 rounded-2xl bg-gray-50 border border-gray-200 text-gray-800 focus:outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-400 focus:bg-white transition-colors";
+
   return (
     <div className="space-y-8">
       {/* Project Settings */}
-      <div className="bg-white/70 backdrop-blur-sm border border-sky-100 rounded-2xl p-6 shadow-sm">
-        <h2 className="text-lg font-semibold font-heading text-gray-800 mb-4">Project Settings</h2>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <div className="bg-white rounded-3xl p-7 shadow-sm border border-gray-100">
+        <h2 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-5">Project Settings</h2>
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
           {error && (
-            <div className="p-3 rounded-lg bg-rose-50 border border-rose-200 text-rose-600 text-sm">
+            <div className="p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-600 text-sm font-medium">
               {error}
             </div>
           )}
           <div>
-            <label className="block text-sm font-medium text-gray-600 mb-1.5">名前</label>
-            <input
-              {...register("name")}
-              className="w-full px-4 py-2.5 rounded-xl bg-white border border-sky-200 text-gray-800 focus:outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-400"
-            />
+            <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">名前</label>
+            <input {...register("name")} className={inputClass} />
             {errors.name && <p className="text-rose-500 text-xs mt-1">{errors.name.message}</p>}
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-600 mb-1.5">キー</label>
-            <input
-              {...register("key")}
-              className="w-full px-4 py-2.5 rounded-xl bg-white border border-sky-200 text-gray-800 focus:outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-400 uppercase"
-            />
+            <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">キー</label>
+            <input {...register("key")} className={`${inputClass} uppercase`} />
             {errors.key && <p className="text-rose-500 text-xs mt-1">{errors.key.message}</p>}
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-600 mb-1.5">説明</label>
-            <textarea
-              {...register("description")}
-              rows={3}
-              className="w-full px-4 py-2.5 rounded-xl bg-white border border-sky-200 text-gray-800 focus:outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-400 resize-none"
-            />
+            <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">説明</label>
+            <textarea {...register("description")} rows={3} className={`${inputClass} resize-none`} />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-600 mb-1.5">カラー</label>
+            <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">カラー</label>
             <div className="flex gap-2">
               {PROJECT_COLORS.map((color) => (
                 <button
@@ -136,7 +163,7 @@ export function ProjectSettingsForm({ project, members, labels }: Props) {
           <button
             type="submit"
             disabled={loading}
-            className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-sky-500 to-cyan-500 text-white font-medium hover:from-sky-600 hover:to-cyan-600 transition-all disabled:opacity-50 shadow-md shadow-sky-200 cursor-pointer"
+            className="px-6 py-3 rounded-2xl bg-gradient-to-r from-sky-500 to-teal-500 text-white font-semibold hover:from-sky-600 hover:to-teal-600 transition-all disabled:opacity-50 shadow-lg shadow-sky-200/40 cursor-pointer text-sm"
           >
             {loading ? "更新中..." : "更新"}
           </button>
@@ -144,39 +171,87 @@ export function ProjectSettingsForm({ project, members, labels }: Props) {
       </div>
 
       {/* Members */}
-      <div className="bg-white/70 backdrop-blur-sm border border-sky-100 rounded-2xl p-6 shadow-sm">
-        <h2 className="text-lg font-semibold font-heading text-gray-800 mb-4">Members</h2>
-        <div className="space-y-2">
+      <div className="bg-white rounded-3xl p-7 shadow-sm border border-gray-100">
+        <h2 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-5">Members</h2>
+
+        {/* Member list */}
+        <div className="space-y-2 mb-5">
           {members.map((m) => (
-            <div key={m.id} className="flex items-center justify-between py-2 px-3 rounded-xl bg-sky-50/50">
+            <div key={m.id} className="flex items-center justify-between py-3 px-4 rounded-2xl bg-gray-50 group">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-sky-400 to-cyan-500 flex items-center justify-center text-xs text-white font-medium">
+                <div className="w-9 h-9 rounded-full bg-gradient-to-br from-sky-400 to-teal-400 flex items-center justify-center text-xs font-bold text-white ring-2 ring-white">
                   {(m.profiles?.display_name ?? "?").charAt(0).toUpperCase()}
                 </div>
-                <span className="text-sm text-gray-700">{m.profiles?.display_name}</span>
+                <div>
+                  <span className="text-sm font-medium text-gray-700 block">
+                    {m.profiles?.display_name}
+                  </span>
+                  <span className="text-[11px] text-gray-400 capitalize">{m.role === "admin" ? "管理者" : m.role === "member" ? "メンバー" : "閲覧者"}</span>
+                </div>
               </div>
-              <span className="text-xs text-gray-400 capitalize">{m.role}</span>
+              {m.role !== "admin" && (
+                <button
+                  onClick={() => handleRemoveMember(m.id, m.profiles?.display_name ?? "")}
+                  className="opacity-0 group-hover:opacity-100 p-1.5 rounded-xl text-gray-300 hover:text-rose-500 hover:bg-rose-50 transition-all cursor-pointer"
+                >
+                  <X size={14} />
+                </button>
+              )}
             </div>
           ))}
+        </div>
+
+        {/* Add member form */}
+        <div className="border-t border-gray-100 pt-5">
+          <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">メンバーを追加</p>
+          <div className="flex gap-2">
+            <input
+              value={memberSearch}
+              onChange={(e) => setMemberSearch(e.target.value)}
+              placeholder="ユーザー名で検索..."
+              className="flex-1 px-4 py-3 rounded-2xl bg-gray-50 border border-gray-200 text-sm text-gray-700 placeholder:text-gray-400 focus:outline-none focus:border-sky-400 focus:bg-white transition-colors"
+              onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), handleAddMember())}
+            />
+            <select
+              value={memberRole}
+              onChange={(e) => setMemberRole(e.target.value as "admin" | "member" | "viewer")}
+              className="px-3 py-3 rounded-2xl bg-gray-50 border border-gray-200 text-sm text-gray-600 focus:outline-none focus:border-sky-400 appearance-none cursor-pointer font-medium"
+            >
+              {MEMBER_ROLES.map((r) => (
+                <option key={r.value} value={r.value}>{r.label}</option>
+              ))}
+            </select>
+            <button
+              onClick={handleAddMember}
+              disabled={memberLoading || !memberSearch.trim()}
+              className="px-4 py-3 rounded-2xl bg-gradient-to-r from-sky-500 to-teal-500 text-white hover:from-sky-600 hover:to-teal-600 transition-all disabled:opacity-50 shadow-md shadow-sky-200/40 cursor-pointer flex items-center gap-2 text-sm font-semibold shrink-0"
+            >
+              <UserPlus size={16} />
+              {memberLoading ? "追加中..." : "追加"}
+            </button>
+          </div>
+          <p className="text-[11px] text-gray-400 mt-2">
+            登録済みユーザーの表示名で検索できます
+          </p>
         </div>
       </div>
 
       {/* Labels */}
-      <div className="bg-white/70 backdrop-blur-sm border border-sky-100 rounded-2xl p-6 shadow-sm">
-        <h2 className="text-lg font-semibold font-heading text-gray-800 mb-4">Labels</h2>
-        <div className="space-y-2 mb-4">
+      <div className="bg-white rounded-3xl p-7 shadow-sm border border-gray-100">
+        <h2 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-5">Labels</h2>
+        <div className="space-y-2 mb-5">
           {labels.map((label) => (
             <div
               key={label.id}
-              className="flex items-center justify-between py-2 px-3 rounded-xl bg-sky-50/50"
+              className="flex items-center justify-between py-2.5 px-4 rounded-2xl bg-gray-50 group"
             >
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded-full" style={{ backgroundColor: label.color }} />
-                <span className="text-sm text-gray-700">{label.name}</span>
+              <div className="flex items-center gap-2.5">
+                <div className="w-3.5 h-3.5 rounded-full" style={{ backgroundColor: label.color }} />
+                <span className="text-sm font-medium text-gray-700">{label.name}</span>
               </div>
               <button
                 onClick={() => handleDeleteLabel(label.id)}
-                className="text-gray-400 hover:text-rose-500 transition-colors cursor-pointer"
+                className="opacity-0 group-hover:opacity-100 p-1.5 rounded-xl text-gray-300 hover:text-rose-500 hover:bg-rose-50 transition-all cursor-pointer"
               >
                 <X size={14} />
               </button>
@@ -188,18 +263,18 @@ export function ProjectSettingsForm({ project, members, labels }: Props) {
             type="color"
             value={newLabelColor}
             onChange={(e) => setNewLabelColor(e.target.value)}
-            className="w-10 h-10 rounded-lg border border-sky-200 bg-transparent cursor-pointer"
+            className="w-12 h-12 rounded-2xl border border-gray-200 bg-transparent cursor-pointer"
           />
           <input
             value={newLabelName}
             onChange={(e) => setNewLabelName(e.target.value)}
             placeholder="新しいラベル名"
-            className="flex-1 px-4 py-2.5 rounded-xl bg-white border border-sky-200 text-gray-700 placeholder:text-gray-400 focus:outline-none focus:border-sky-400"
+            className="flex-1 px-4 py-3 rounded-2xl bg-gray-50 border border-gray-200 text-sm text-gray-700 placeholder:text-gray-400 focus:outline-none focus:border-sky-400 focus:bg-white transition-colors"
             onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), handleAddLabel())}
           />
           <button
             onClick={handleAddLabel}
-            className="px-3 py-2.5 rounded-xl bg-sky-50 border border-sky-200 text-sky-500 hover:bg-sky-100 transition-colors cursor-pointer"
+            className="px-4 py-3 rounded-2xl bg-gray-50 border border-gray-200 text-gray-500 hover:bg-gray-100 transition-colors cursor-pointer"
           >
             <Plus size={16} />
           </button>
@@ -207,14 +282,14 @@ export function ProjectSettingsForm({ project, members, labels }: Props) {
       </div>
 
       {/* Danger Zone */}
-      <div className="bg-white/70 backdrop-blur-sm border border-rose-200 rounded-2xl p-6 shadow-sm">
-        <h2 className="text-lg font-semibold text-rose-500 mb-2">Danger Zone</h2>
-        <p className="text-sm text-gray-500 mb-4">
+      <div className="bg-white rounded-3xl p-7 shadow-sm border border-rose-100">
+        <h2 className="text-xs font-bold text-rose-500 uppercase tracking-wider mb-2">Danger Zone</h2>
+        <p className="text-sm text-gray-500 mb-5">
           プロジェクトを削除すると、すべてのタスク、コメント、ラベルが完全に削除されます。
         </p>
         <button
           onClick={handleDelete}
-          className="flex items-center gap-2 px-4 py-2 rounded-xl bg-rose-50 border border-rose-200 text-rose-500 hover:bg-rose-100 transition-colors text-sm cursor-pointer"
+          className="flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-rose-50 border border-rose-200 text-rose-500 hover:bg-rose-100 transition-colors text-sm font-semibold cursor-pointer"
         >
           <Trash2 size={16} />
           プロジェクトを削除
