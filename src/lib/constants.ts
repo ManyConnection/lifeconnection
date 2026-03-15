@@ -3,6 +3,15 @@ import type { Database } from "@/lib/supabase/database.types";
 type TaskStatus = Database["public"]["Enums"]["task_status"];
 type TaskPriority = Database["public"]["Enums"]["task_priority"];
 
+// --- Config types for per-project customization ---
+
+export type StatusConfigItem = { label: string; enabled: boolean };
+export type PriorityConfigItem = { label: string; enabled: boolean };
+export type StatusConfig = Partial<Record<TaskStatus, StatusConfigItem>>;
+export type PriorityConfig = Partial<Record<TaskPriority, PriorityConfigItem>>;
+
+// --- Default definitions ---
+
 export const TASK_STATUSES: {
   value: TaskStatus;
   label: string;
@@ -90,10 +99,40 @@ export const PROJECT_COLORS = [
   "#f97316", // orange
 ];
 
-export function getStatusConfig(status: TaskStatus) {
-  return TASK_STATUSES.find((s) => s.value === status) ?? TASK_STATUSES[0];
+// --- Helpers that merge project config with defaults ---
+
+export function getProjectStatuses(statusConfig?: StatusConfig | null) {
+  return TASK_STATUSES
+    .filter((s) => {
+      const override = statusConfig?.[s.value];
+      return override ? override.enabled !== false : true;
+    })
+    .map((s) => {
+      const override = statusConfig?.[s.value];
+      return override?.label ? { ...s, label: override.label } : s;
+    });
 }
 
-export function getPriorityConfig(priority: TaskPriority) {
-  return TASK_PRIORITIES.find((p) => p.value === priority) ?? TASK_PRIORITIES[1];
+export function getProjectPriorities(priorityConfig?: PriorityConfig | null) {
+  return TASK_PRIORITIES
+    .filter((p) => {
+      const override = priorityConfig?.[p.value];
+      return override ? override.enabled !== false : true;
+    })
+    .map((p) => {
+      const override = priorityConfig?.[p.value];
+      return override?.label ? { ...p, label: override.label } : p;
+    });
+}
+
+export function getStatusConfig(status: TaskStatus, statusConfig?: StatusConfig | null) {
+  const base = TASK_STATUSES.find((s) => s.value === status) ?? TASK_STATUSES[0];
+  const override = statusConfig?.[status];
+  return override?.label ? { ...base, label: override.label } : base;
+}
+
+export function getPriorityConfig(priority: TaskPriority, priorityConfig?: PriorityConfig | null) {
+  const base = TASK_PRIORITIES.find((p) => p.value === priority) ?? TASK_PRIORITIES[1];
+  const override = priorityConfig?.[priority];
+  return override?.label ? { ...base, label: override.label } : base;
 }

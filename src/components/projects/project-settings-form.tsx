@@ -4,14 +4,22 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { projectSchema, type ProjectInput } from "@/lib/validations/project";
-import { updateProject, deleteProject, addProjectMember, removeProjectMember } from "@/lib/actions/projects";
+import { updateProject, deleteProject, addProjectMember, removeProjectMember, updateProjectConfig } from "@/lib/actions/projects";
 import { createLabel, deleteLabel } from "@/lib/actions/labels";
-import { PROJECT_COLORS } from "@/lib/constants";
-import { Trash2, Plus, X, UserPlus } from "lucide-react";
+import { PROJECT_COLORS, TASK_STATUSES, TASK_PRIORITIES, type StatusConfig, type PriorityConfig } from "@/lib/constants";
+import { Trash2, Plus, X, UserPlus, RotateCcw } from "lucide-react";
 import { toast } from "sonner";
 
 interface Props {
-  project: { id: string; name: string; key: string; description: string; color: string };
+  project: {
+    id: string;
+    name: string;
+    key: string;
+    description: string;
+    color: string;
+    status_config?: unknown;
+    priority_config?: unknown;
+  };
   members: {
     id: string;
     role: string;
@@ -31,11 +39,34 @@ export function ProjectSettingsForm({ project, members, labels }: Props) {
   const [loading, setLoading] = useState(false);
   const [newLabelName, setNewLabelName] = useState("");
   const [newLabelColor, setNewLabelColor] = useState("#0ea5e9");
-
-  // Member add state
   const [memberSearch, setMemberSearch] = useState("");
   const [memberRole, setMemberRole] = useState<"admin" | "member" | "viewer">("member");
   const [memberLoading, setMemberLoading] = useState(false);
+
+  // Status/Priority config state
+  const [statusConfig, setStatusConfig] = useState<StatusConfig>(() => {
+    const cfg: StatusConfig = {};
+    for (const s of TASK_STATUSES) {
+      const override = (project.status_config as StatusConfig)?.[s.value];
+      cfg[s.value] = {
+        label: override?.label ?? s.label,
+        enabled: override?.enabled !== false,
+      };
+    }
+    return cfg;
+  });
+  const [priorityConfig, setPriorityConfig] = useState<PriorityConfig>(() => {
+    const cfg: PriorityConfig = {};
+    for (const p of TASK_PRIORITIES) {
+      const override = (project.priority_config as PriorityConfig)?.[p.value];
+      cfg[p.value] = {
+        label: override?.label ?? p.label,
+        enabled: override?.enabled !== false,
+      };
+    }
+    return cfg;
+  });
+  const [configLoading, setConfigLoading] = useState(false);
 
   const {
     register,
@@ -93,6 +124,33 @@ export function ProjectSettingsForm({ project, members, labels }: Props) {
     } else {
       toast.success("メンバーを削除しました");
     }
+  };
+
+  const handleSaveConfig = async () => {
+    setConfigLoading(true);
+    const result = await updateProjectConfig(project.id, {
+      status_config: statusConfig,
+      priority_config: priorityConfig,
+    });
+    if (result?.error) {
+      toast.error(result.error);
+    } else {
+      toast.success("ステータス・優先度設定を保存しました");
+    }
+    setConfigLoading(false);
+  };
+
+  const handleResetConfig = () => {
+    const sCfg: StatusConfig = {};
+    for (const s of TASK_STATUSES) {
+      sCfg[s.value] = { label: s.label, enabled: true };
+    }
+    setStatusConfig(sCfg);
+    const pCfg: PriorityConfig = {};
+    for (const p of TASK_PRIORITIES) {
+      pCfg[p.value] = { label: p.label, enabled: true };
+    }
+    setPriorityConfig(pCfg);
   };
 
   const handleAddLabel = async () => {
@@ -170,11 +228,109 @@ export function ProjectSettingsForm({ project, members, labels }: Props) {
         </form>
       </div>
 
+      {/* Status & Priority Config */}
+      <div className="bg-white rounded-3xl p-7 shadow-sm border border-gray-100">
+        <div className="flex items-center justify-between mb-5">
+          <h2 className="text-xs font-bold text-gray-400 uppercase tracking-wider">ステータス・優先度</h2>
+          <button
+            onClick={handleResetConfig}
+            className="flex items-center gap-1.5 text-[11px] font-semibold text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
+          >
+            <RotateCcw size={12} />
+            デフォルトに戻す
+          </button>
+        </div>
+
+        {/* Statuses */}
+        <div className="mb-6">
+          <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">ステータス</p>
+          <div className="space-y-2">
+            {TASK_STATUSES.map((s) => {
+              const cfg = statusConfig[s.value];
+              return (
+                <div key={s.value} className="flex items-center gap-3 py-2.5 px-4 rounded-2xl bg-gray-50">
+                  <span className={`w-2.5 h-2.5 rounded-full shrink-0 ${s.dotColor}`} />
+                  <input
+                    value={cfg?.label ?? s.label}
+                    onChange={(e) =>
+                      setStatusConfig((prev) => ({
+                        ...prev,
+                        [s.value]: { ...prev[s.value]!, label: e.target.value },
+                      }))
+                    }
+                    className="flex-1 bg-transparent text-sm font-medium text-gray-700 focus:outline-none border-b border-transparent focus:border-sky-300 transition-colors"
+                  />
+                  <label className="flex items-center gap-2 cursor-pointer shrink-0">
+                    <input
+                      type="checkbox"
+                      checked={cfg?.enabled !== false}
+                      onChange={(e) =>
+                        setStatusConfig((prev) => ({
+                          ...prev,
+                          [s.value]: { ...prev[s.value]!, enabled: e.target.checked },
+                        }))
+                      }
+                      className="w-4 h-4 rounded border-gray-300 text-sky-500 focus:ring-sky-400 cursor-pointer"
+                    />
+                    <span className="text-[11px] text-gray-400">有効</span>
+                  </label>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Priorities */}
+        <div className="mb-6">
+          <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">優先度</p>
+          <div className="space-y-2">
+            {TASK_PRIORITIES.map((p) => {
+              const cfg = priorityConfig[p.value];
+              return (
+                <div key={p.value} className="flex items-center gap-3 py-2.5 px-4 rounded-2xl bg-gray-50">
+                  <span className={`text-sm ${p.color}`}>●</span>
+                  <input
+                    value={cfg?.label ?? p.label}
+                    onChange={(e) =>
+                      setPriorityConfig((prev) => ({
+                        ...prev,
+                        [p.value]: { ...prev[p.value]!, label: e.target.value },
+                      }))
+                    }
+                    className="flex-1 bg-transparent text-sm font-medium text-gray-700 focus:outline-none border-b border-transparent focus:border-sky-300 transition-colors"
+                  />
+                  <label className="flex items-center gap-2 cursor-pointer shrink-0">
+                    <input
+                      type="checkbox"
+                      checked={cfg?.enabled !== false}
+                      onChange={(e) =>
+                        setPriorityConfig((prev) => ({
+                          ...prev,
+                          [p.value]: { ...prev[p.value]!, enabled: e.target.checked },
+                        }))
+                      }
+                      className="w-4 h-4 rounded border-gray-300 text-sky-500 focus:ring-sky-400 cursor-pointer"
+                    />
+                    <span className="text-[11px] text-gray-400">有効</span>
+                  </label>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        <button
+          onClick={handleSaveConfig}
+          disabled={configLoading}
+          className="px-6 py-3 rounded-2xl bg-gradient-to-r from-sky-500 to-teal-500 text-white font-semibold hover:from-sky-600 hover:to-teal-600 transition-all disabled:opacity-50 shadow-lg shadow-sky-200/40 cursor-pointer text-sm"
+        >
+          {configLoading ? "保存中..." : "設定を保存"}
+        </button>
+      </div>
+
       {/* Members */}
       <div className="bg-white rounded-3xl p-7 shadow-sm border border-gray-100">
         <h2 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-5">Members</h2>
-
-        {/* Member list */}
         <div className="space-y-2 mb-5">
           {members.map((m) => (
             <div key={m.id} className="flex items-center justify-between py-3 px-4 rounded-2xl bg-gray-50 group">
@@ -200,8 +356,6 @@ export function ProjectSettingsForm({ project, members, labels }: Props) {
             </div>
           ))}
         </div>
-
-        {/* Add member form */}
         <div className="border-t border-gray-100 pt-5">
           <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">メンバーを追加</p>
           <div className="flex gap-2">
@@ -230,9 +384,7 @@ export function ProjectSettingsForm({ project, members, labels }: Props) {
               {memberLoading ? "追加中..." : "追加"}
             </button>
           </div>
-          <p className="text-[11px] text-gray-400 mt-2">
-            登録済みユーザーの表示名で検索できます
-          </p>
+          <p className="text-[11px] text-gray-400 mt-2">登録済みユーザーの表示名で検索できます</p>
         </div>
       </div>
 
@@ -241,10 +393,7 @@ export function ProjectSettingsForm({ project, members, labels }: Props) {
         <h2 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-5">Labels</h2>
         <div className="space-y-2 mb-5">
           {labels.map((label) => (
-            <div
-              key={label.id}
-              className="flex items-center justify-between py-2.5 px-4 rounded-2xl bg-gray-50 group"
-            >
+            <div key={label.id} className="flex items-center justify-between py-2.5 px-4 rounded-2xl bg-gray-50 group">
               <div className="flex items-center gap-2.5">
                 <div className="w-3.5 h-3.5 rounded-full" style={{ backgroundColor: label.color }} />
                 <span className="text-sm font-medium text-gray-700">{label.name}</span>

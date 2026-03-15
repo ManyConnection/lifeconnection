@@ -41,6 +41,8 @@ export type Database = {
           description: string;
           color: string;
           owner_id: string;
+          status_config: Json | null;
+          priority_config: Json | null;
           created_at: string;
           updated_at: string;
         };
@@ -51,6 +53,8 @@ export type Database = {
           description?: string;
           color?: string;
           owner_id: string;
+          status_config?: Json | null;
+          priority_config?: Json | null;
           created_at?: string;
           updated_at?: string;
         };
@@ -61,6 +65,8 @@ export type Database = {
           description?: string;
           color?: string;
           owner_id?: string;
+          status_config?: Json | null;
+          priority_config?: Json | null;
           created_at?: string;
           updated_at?: string;
         };

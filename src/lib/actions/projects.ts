@@ -133,6 +133,31 @@ export async function addProjectMember(
   return { success: true };
 }
 
+export async function updateProjectConfig(
+  projectId: string,
+  config: {
+    status_config?: Record<string, { label: string; enabled: boolean }> | null;
+    priority_config?: Record<string, { label: string; enabled: boolean }> | null;
+  }
+) {
+  const supabase = await createClient();
+  const updateData: Record<string, unknown> = {};
+  if (config.status_config !== undefined) updateData.status_config = config.status_config;
+  if (config.priority_config !== undefined) updateData.priority_config = config.priority_config;
+
+  const { error } = await supabase
+    .from("projects")
+    .update(updateData)
+    .eq("id", projectId);
+
+  if (error) {
+    return { error: "設定の更新に失敗しました" };
+  }
+
+  revalidatePath(`/projects/${projectId}`);
+  return { success: true };
+}
+
 export async function removeProjectMember(projectId: string, memberId: string) {
   const supabase = await createClient();
   const { error } = await supabase
