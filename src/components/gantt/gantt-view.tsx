@@ -204,7 +204,10 @@ export function GanttView({
                       <span className="text-gray-400 text-xs">
                         #{task.task_number}
                       </span>
-                      <span className="truncate hover:text-sky-600 transition-colors">{task.title}</span>
+                      <span className="truncate hover:text-sky-600 transition-colors flex-1">{task.title}</span>
+                      <span className={`shrink-0 ml-auto text-[10px] font-medium px-1.5 py-0.5 rounded-md border ${config.bgColor} ${config.color}`}>
+                        {config.label}
+                      </span>
                     </button>
                     <div className="relative flex-1" style={{ height: 44 }}>
                       {bar && (
