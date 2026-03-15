@@ -13,7 +13,7 @@ export async function getProjects() {
     )
     .order("created_at", { ascending: false });
 
-  if (error) throw error;
+  if (error) return [];
   return data;
 }
 
@@ -41,7 +41,7 @@ export async function getProjectMembers(projectId: string) {
     )
     .eq("project_id", projectId);
 
-  if (error) throw error;
+  if (error) return [];
   return data;
 }
 
@@ -53,6 +53,6 @@ export async function getProjectLabels(projectId: string) {
     .eq("project_id", projectId)
     .order("name");
 
-  if (error) throw error;
+  if (error) return [];
   return data;
 }

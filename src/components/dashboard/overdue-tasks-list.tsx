@@ -7,8 +7,8 @@ interface OverdueTask {
   title: string;
   task_number: number;
   due_date: string | null;
-  priority: "low" | "medium" | "high" | "critical";
-  project?: { id: string; name: string; key: string } | null;
+  priority: string;
+  project?: { id: string; name: string; key: string; color?: string } | null;
 }
 
 export function OverdueTasksList({ tasks }: { tasks: OverdueTask[] }) {
@@ -35,7 +35,7 @@ export function OverdueTasksList({ tasks }: { tasks: OverdueTask[] }) {
             </div>
           </div>
           <div className="flex items-center gap-3 shrink-0">
-            <TaskPriorityBadge priority={task.priority} />
+            <TaskPriorityBadge priority={task.priority as "low" | "medium" | "high" | "critical"} />
             {task.due_date && (
               <span className="text-xs text-rose-400">
                 {format(new Date(task.due_date), "MM/dd")}
