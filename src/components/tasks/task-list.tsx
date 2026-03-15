@@ -37,11 +37,11 @@ export function TaskList({
   return (
     <div className="bg-white rounded-3xl overflow-hidden shadow-sm border border-gray-100">
       <div className="grid grid-cols-[1fr_120px_100px_120px_100px_40px] gap-2 px-5 py-3.5 text-[11px] font-bold text-gray-400 uppercase tracking-wider border-b border-gray-100">
-        <span>Task</span>
-        <span>Status</span>
-        <span>Priority</span>
-        <span>Assignee</span>
-        <span>Due</span>
+        <span>タスク</span>
+        <span>ステータス</span>
+        <span>優先度</span>
+        <span>担当者</span>
+        <span>期限</span>
         <span></span>
       </div>
       {tasks.map((task) => (
