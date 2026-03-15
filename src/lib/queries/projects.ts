@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { createClient } from "@/lib/supabase/server";
 
 export async function getProjects() {
@@ -17,7 +18,8 @@ export async function getProjects() {
   return data;
 }
 
-export async function getProject(projectId: string) {
+// cache() deduplicates within a single request/render
+export const getProject = cache(async (projectId: string) => {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("projects")
@@ -25,11 +27,11 @@ export async function getProject(projectId: string) {
     .eq("id", projectId)
     .single();
 
-  if (error) throw error;
+  if (error) return null;
   return data;
-}
+});
 
-export async function getProjectMembers(projectId: string) {
+export const getProjectMembers = cache(async (projectId: string) => {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("project_members")
@@ -43,9 +45,9 @@ export async function getProjectMembers(projectId: string) {
 
   if (error) return [];
   return data;
-}
+});
 
-export async function getProjectLabels(projectId: string) {
+export const getProjectLabels = cache(async (projectId: string) => {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("labels")
@@ -55,4 +57,4 @@ export async function getProjectLabels(projectId: string) {
 
   if (error) return [];
   return data;
-}
+});
