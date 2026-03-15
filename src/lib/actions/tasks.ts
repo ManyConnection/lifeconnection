@@ -38,17 +38,17 @@ export async function createTask(
       description: parsed.data.description ?? "",
       status: parsed.data.status ?? "open",
       priority: parsed.data.priority ?? "medium",
-      assignee_id: parsed.data.assignee_id ?? null,
-      parent_task_id: parsed.data.parent_task_id ?? null,
-      start_date: parsed.data.start_date ?? null,
-      due_date: parsed.data.due_date ?? null,
+      assignee_id: parsed.data.assignee_id || null,
+      parent_task_id: parsed.data.parent_task_id || null,
+      start_date: parsed.data.start_date || null,
+      due_date: parsed.data.due_date || null,
       created_by: user.id,
     })
     .select()
     .single();
 
   if (error) {
-    return { error: "タスクの作成に失敗しました" };
+    return { error: `タスクの作成に失敗しました: ${error.message}` };
   }
 
   // Assign labels
@@ -90,10 +90,10 @@ export async function updateTask(
     updateData.status = formData.status as Database["public"]["Tables"]["tasks"]["Row"]["status"];
   if (formData.priority !== undefined)
     updateData.priority = formData.priority as Database["public"]["Tables"]["tasks"]["Row"]["priority"];
-  if (formData.assignee_id !== undefined) updateData.assignee_id = formData.assignee_id;
-  if (formData.parent_task_id !== undefined) updateData.parent_task_id = formData.parent_task_id;
-  if (formData.start_date !== undefined) updateData.start_date = formData.start_date;
-  if (formData.due_date !== undefined) updateData.due_date = formData.due_date;
+  if (formData.assignee_id !== undefined) updateData.assignee_id = formData.assignee_id || null;
+  if (formData.parent_task_id !== undefined) updateData.parent_task_id = formData.parent_task_id || null;
+  if (formData.start_date !== undefined) updateData.start_date = formData.start_date || null;
+  if (formData.due_date !== undefined) updateData.due_date = formData.due_date || null;
 
   const { error } = await supabase
     .from("tasks")
