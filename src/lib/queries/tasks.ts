@@ -25,7 +25,6 @@ export async function getTasks(
     `
     )
     .eq("project_id", projectId)
-    .is("parent_task_id", null)
     .order("sort_order", { ascending: true })
     .order("created_at", { ascending: false });
 
@@ -44,7 +43,32 @@ export async function getTasks(
 
   const { data, error } = await query;
   if (error) return [];
-  return data;
+
+  // 親→子の順に並べる（親タスクの直後に子タスクを配置）
+  const parents = (data ?? []).filter((t) => !t.parent_task_id);
+  const childMap = new Map<string, typeof data>();
+  for (const t of data ?? []) {
+    if (t.parent_task_id) {
+      const arr = childMap.get(t.parent_task_id) ?? [];
+      arr.push(t);
+      childMap.set(t.parent_task_id, arr);
+    }
+  }
+
+  const sorted: typeof data = [];
+  for (const parent of parents) {
+    sorted.push(parent);
+    const children = childMap.get(parent.id);
+    if (children) sorted.push(...children);
+  }
+  // 親のない子タスク（フィルタで親が除外された場合）
+  for (const t of data ?? []) {
+    if (t.parent_task_id && !parents.some((p) => p.id === t.parent_task_id)) {
+      sorted.push(t);
+    }
+  }
+
+  return sorted;
 }
 
 export const getTask = cache(async (taskId: string) => {
@@ -66,7 +90,6 @@ export const getTask = cache(async (taskId: string) => {
     return null;
   }
 
-  // creator を別途取得（FK名の曖昧さ回避）
   let creator: { id: string; display_name: string } | null = null;
   if (data.created_by) {
     const { data: profile } = await supabase
@@ -80,7 +103,6 @@ export const getTask = cache(async (taskId: string) => {
   return { ...data, creator };
 });
 
-// 親タスクを別クエリで取得
 export async function getParentTask(parentTaskId: string | null) {
   if (!parentTaskId) return null;
   const supabase = await createClient();
@@ -94,7 +116,6 @@ export async function getParentTask(parentTaskId: string | null) {
   return data;
 }
 
-// サブタスクを別クエリで取得（自己参照FK問題回避）
 export async function getSubtasks(parentTaskId: string) {
   const supabase = await createClient();
   const { data, error } = await supabase
@@ -141,7 +162,6 @@ export async function getTasksForBoard(projectId: string) {
     `
     )
     .eq("project_id", projectId)
-    .is("parent_task_id", null)
     .order("sort_order", { ascending: true });
 
   if (error) return [];
@@ -159,7 +179,6 @@ export async function getTasksForGantt(projectId: string) {
     `
     )
     .eq("project_id", projectId)
-    .is("parent_task_id", null)
     .not("start_date", "is", null)
     .order("start_date", { ascending: true });
 

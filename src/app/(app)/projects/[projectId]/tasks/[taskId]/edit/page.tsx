@@ -1,7 +1,8 @@
 import { getTask } from "@/lib/queries/tasks";
-import { getProjectMembers, getProjectLabels } from "@/lib/queries/projects";
+import { getProjectMembers, getProjectLabels, getProject } from "@/lib/queries/projects";
 import { TaskForm } from "@/components/tasks/task-form";
 import { notFound } from "next/navigation";
+import type { StatusConfig, PriorityConfig } from "@/lib/constants";
 
 export default async function EditTaskPage({
   params,
@@ -10,10 +11,11 @@ export default async function EditTaskPage({
 }) {
   const { projectId, taskId } = await params;
 
-  const [task, members, labels] = await Promise.all([
+  const [task, members, labels, project] = await Promise.all([
     getTask(taskId).catch(() => null),
     getProjectMembers(projectId).catch(() => []),
     getProjectLabels(projectId).catch(() => []),
+    getProject(projectId).catch(() => null),
   ]);
 
   if (!task) return notFound();
@@ -27,6 +29,8 @@ export default async function EditTaskPage({
           members={members}
           labels={labels}
           task={task}
+          statusConfig={project?.status_config as StatusConfig | null}
+          priorityConfig={project?.priority_config as PriorityConfig | null}
         />
       </div>
     </div>

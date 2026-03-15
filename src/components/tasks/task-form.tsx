@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { taskSchema, type TaskInput } from "@/lib/validations/task";
 import { createTask, updateTask } from "@/lib/actions/tasks";
-import { TASK_STATUSES, TASK_PRIORITIES } from "@/lib/constants";
+import { getProjectStatuses, getProjectPriorities, type StatusConfig, type PriorityConfig } from "@/lib/constants";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
@@ -29,10 +29,14 @@ interface Props {
     task_labels: { label_id: string }[];
   };
   parentTaskId?: string;
+  statusConfig?: StatusConfig | null;
+  priorityConfig?: PriorityConfig | null;
 }
 
-export function TaskForm({ projectId, members, labels, task, parentTaskId }: Props) {
+export function TaskForm({ projectId, members, labels, task, parentTaskId, statusConfig, priorityConfig }: Props) {
   const router = useRouter();
+  const statuses = getProjectStatuses(statusConfig);
+  const priorities = getProjectPriorities(priorityConfig);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [selectedLabels, setSelectedLabels] = useState<string[]>(
@@ -133,7 +137,7 @@ export function TaskForm({ projectId, members, labels, task, parentTaskId }: Pro
         <div>
           <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">ステータス</label>
           <select {...register("status")} className={selectClass}>
-            {TASK_STATUSES.map((s) => (
+            {statuses.map((s) => (
               <option key={s.value} value={s.value}>
                 {s.label}
               </option>
@@ -143,7 +147,7 @@ export function TaskForm({ projectId, members, labels, task, parentTaskId }: Pro
         <div>
           <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">優先度</label>
           <select {...register("priority")} className={selectClass}>
-            {TASK_PRIORITIES.map((p) => (
+            {priorities.map((p) => (
               <option key={p.value} value={p.value}>
                 {p.label}
               </option>

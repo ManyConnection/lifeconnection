@@ -33,6 +33,8 @@ export default async function TaskDetailPage({
       parentTask={parentTask}
       projectId={projectId}
       projectKey={project.key}
+      statusConfig={project.status_config as Record<string, { label: string; enabled: boolean }> | null}
+      priorityConfig={project.priority_config as Record<string, { label: string; enabled: boolean }> | null}
     />
   );
 }

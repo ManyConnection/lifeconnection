@@ -16,6 +16,7 @@ interface Task {
   priority: "low" | "medium" | "high" | "critical";
   assignee: { id: string; display_name: string; avatar_url: string | null } | null;
   due_date: string | null;
+  parent_task_id: string | null;
   task_labels: { label_id: string; labels: { id: string; name: string; color: string } | null }[];
 }
 
@@ -41,8 +42,13 @@ export function TaskListRow({
       <div className="min-w-0">
         <Link
           href={`/projects/${projectId}/tasks/${task.id}`}
-          className="text-sm font-medium text-gray-700 hover:text-sky-600 transition-colors truncate block cursor-pointer"
+          className={`text-sm font-medium text-gray-700 hover:text-sky-600 transition-colors truncate block cursor-pointer ${
+            task.parent_task_id ? "pl-6" : ""
+          }`}
         >
+          {task.parent_task_id && (
+            <span className="text-gray-300 mr-1.5">└</span>
+          )}
           <span className="text-gray-300 mr-2 font-bold">#{task.task_number}</span>
           {task.title}
         </Link>

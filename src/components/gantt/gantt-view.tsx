@@ -28,6 +28,7 @@ interface Task {
   priority: "low" | "medium" | "high" | "critical";
   start_date: string | null;
   due_date: string | null;
+  parent_task_id: string | null;
   assignee: { id: string; display_name: string } | null;
 }
 
@@ -50,8 +51,32 @@ export function GanttView({
   const [zoom, setZoom] = useState<ZoomLevel>("day");
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
 
+  // 親→子の順に並べる
+  const sortedTasks = useMemo(() => {
+    const parents = tasks.filter((t) => !t.parent_task_id);
+    const childMap = new Map<string, Task[]>();
+    for (const t of tasks) {
+      if (t.parent_task_id) {
+        const arr = childMap.get(t.parent_task_id) ?? [];
+        arr.push(t);
+        childMap.set(t.parent_task_id, arr);
+      }
+    }
+    const result: Task[] = [];
+    for (const p of parents) {
+      result.push(p);
+      const children = childMap.get(p.id);
+      if (children) result.push(...children);
+    }
+    // 親が日付なしで除外された孤立子タスク
+    for (const t of tasks) {
+      if (t.parent_task_id && !result.includes(t)) result.push(t);
+    }
+    return result;
+  }, [tasks]);
+
   const { startDate, endDate, columns, colWidth } = useMemo(() => {
-    if (tasks.length === 0) {
+    if (sortedTasks.length === 0) {
       const today = new Date();
       return {
         startDate: startOfDay(today),
@@ -61,7 +86,7 @@ export function GanttView({
       };
     }
 
-    const dates = tasks.flatMap((t) =>
+    const dates = sortedTasks.flatMap((t) =>
       [t.start_date, t.due_date].filter(Boolean).map((d) => new Date(d!))
     );
     const min = new Date(Math.min(...dates.map((d) => d.getTime())));
@@ -86,7 +111,7 @@ export function GanttView({
     }
 
     return { startDate: start, endDate: end, columns: cols, colWidth: width };
-  }, [tasks, zoom]);
+  }, [sortedTasks, zoom]);
 
   const totalWidth = columns.length * colWidth;
 
@@ -117,7 +142,7 @@ export function GanttView({
     <div className="space-y-4">
       <GanttToolbar zoom={zoom} onZoomChange={setZoom} />
 
-      {tasks.length === 0 ? (
+      {sortedTasks.length === 0 ? (
         <div className="text-center py-16">
           <p className="text-gray-400">
             開始日が設定されたタスクがありません
@@ -155,8 +180,9 @@ export function GanttView({
               </div>
 
               {/* Rows */}
-              {tasks.map((task) => {
+              {sortedTasks.map((task) => {
                 const config = getStatusConfig(task.status);
+                const isChild = !!task.parent_task_id;
                 const bar =
                   task.start_date && task.due_date
                     ? getBarPosition(task.start_date, task.due_date)
@@ -165,12 +191,15 @@ export function GanttView({
                 return (
                   <div
                     key={task.id}
-                    className="flex border-b border-sky-50 hover:bg-sky-50/30"
+                    className={`flex border-b border-sky-50 hover:bg-sky-50/30 ${isChild ? "bg-sky-50/20" : ""}`}
                   >
                     <button
                       onClick={() => setSelectedTask(task)}
-                      className="w-[280px] shrink-0 px-4 py-3 text-sm text-gray-700 border-r border-sky-100 flex items-center gap-2 truncate text-left hover:bg-sky-50/50 transition-colors cursor-pointer"
+                      className={`w-[280px] shrink-0 py-3 text-sm text-gray-700 border-r border-sky-100 flex items-center gap-2 truncate text-left hover:bg-sky-50/50 transition-colors cursor-pointer ${
+                        isChild ? "pl-9 pr-4" : "px-4"
+                      }`}
                     >
+                      {isChild && <span className="text-gray-300 text-xs">└</span>}
                       <span className={`w-2 h-2 rounded-full shrink-0 ${config.dotColor}`} />
                       <span className="text-gray-400 text-xs">
                         #{task.task_number}
@@ -197,13 +226,13 @@ export function GanttView({
           {dependencies.length > 0 && (
             <svg className="absolute inset-0 pointer-events-none">
               {dependencies.map((dep) => {
-                const pred = tasks.find((t) => t.id === dep.predecessor_id);
-                const succ = tasks.find((t) => t.id === dep.successor_id);
+                const pred = sortedTasks.find((t) => t.id === dep.predecessor_id);
+                const succ = sortedTasks.find((t) => t.id === dep.successor_id);
                 if (!pred?.due_date || !succ?.start_date) return null;
                 const predBar = getBarPosition(pred.start_date!, pred.due_date);
                 const succBar = getBarPosition(succ.start_date, succ.due_date!);
-                const predIdx = tasks.indexOf(pred);
-                const succIdx = tasks.indexOf(succ);
+                const predIdx = sortedTasks.indexOf(pred);
+                const succIdx = sortedTasks.indexOf(succ);
                 const x1 = 280 + predBar.left + predBar.width;
                 const y1 = 44 + predIdx * 44 + 22;
                 const x2 = 280 + succBar.left;

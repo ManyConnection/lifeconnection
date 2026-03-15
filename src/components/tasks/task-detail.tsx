@@ -6,7 +6,7 @@ import { TaskStatusBadge } from "./task-status-badge";
 import { TaskComments } from "./task-comments";
 import { SubtaskAdder } from "./subtask-adder";
 import { deleteTask, updateTaskStatus, updateTask } from "@/lib/actions/tasks";
-import { TASK_STATUSES, TASK_PRIORITIES } from "@/lib/constants";
+import { getProjectStatuses, getProjectPriorities, type StatusConfig, type PriorityConfig } from "@/lib/constants";
 import { format } from "date-fns";
 import { Pencil, Trash2, ArrowLeft, Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -51,10 +51,14 @@ interface Props {
   labels: unknown[];
   projectId: string;
   projectKey: string;
+  statusConfig?: StatusConfig | null;
+  priorityConfig?: PriorityConfig | null;
 }
 
-export function TaskDetail({ task, subtasks, parentTask, comments, projectId, projectKey }: Props) {
+export function TaskDetail({ task, subtasks, parentTask, comments, projectId, projectKey, statusConfig, priorityConfig }: Props) {
   const router = useRouter();
+  const statuses = getProjectStatuses(statusConfig);
+  const priorities = getProjectPriorities(priorityConfig);
 
   const handleDelete = async () => {
     if (!confirm("このタスクを削除しますか？")) return;
@@ -195,7 +199,7 @@ export function TaskDetail({ task, subtasks, parentTask, comments, projectId, pr
                 onChange={(e) => handleStatusChange(e.target.value)}
                 className="w-full px-3.5 py-2.5 rounded-2xl bg-gray-50 border border-gray-100 text-sm text-gray-700 focus:outline-none cursor-pointer font-medium"
               >
-                {TASK_STATUSES.map((s) => (
+                {statuses.map((s) => (
                   <option key={s.value} value={s.value}>
                     {s.label}
                   </option>
@@ -210,7 +214,7 @@ export function TaskDetail({ task, subtasks, parentTask, comments, projectId, pr
                 onChange={(e) => handlePriorityChange(e.target.value)}
                 className="w-full px-3.5 py-2.5 rounded-2xl bg-gray-50 border border-gray-100 text-sm text-gray-700 focus:outline-none cursor-pointer font-medium"
               >
-                {TASK_PRIORITIES.map((p) => (
+                {priorities.map((p) => (
                   <option key={p.value} value={p.value}>
                     {p.label}
                   </option>

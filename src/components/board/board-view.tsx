@@ -26,6 +26,7 @@ interface Task {
   status: TaskStatus;
   priority: "low" | "medium" | "high" | "critical";
   sort_order: number;
+  parent_task_id: string | null;
   assignee: { id: string; display_name: string; avatar_url: string | null } | null;
   task_labels: { label_id: string; labels: { id: string; name: string; color: string } | null }[];
 }

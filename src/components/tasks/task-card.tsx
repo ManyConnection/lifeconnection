@@ -12,6 +12,7 @@ interface TaskCardProps {
     task_number: number;
     title: string;
     priority: "low" | "medium" | "high" | "critical";
+    parent_task_id: string | null;
     assignee: { id: string; display_name: string; avatar_url: string | null } | null;
     task_labels: { label_id: string; labels: { id: string; name: string; color: string } | null }[];
   };
@@ -50,6 +51,9 @@ export function TaskCard({ task, projectId }: TaskCardProps) {
           if (isDragging) e.preventDefault();
         }}
       >
+        {task.parent_task_id && (
+          <span className="text-[9px] font-semibold text-sky-400 bg-sky-50 px-1.5 py-0.5 rounded-md mb-1 inline-block">子チケット</span>
+        )}
         <span className="text-[10px] font-bold text-gray-300">#{task.task_number}</span>
         <p className="text-sm font-medium text-gray-700 mt-1 line-clamp-2 leading-snug">{task.title}</p>
 

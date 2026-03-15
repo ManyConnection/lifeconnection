@@ -8,6 +8,7 @@ interface Task {
   priority: "low" | "medium" | "high" | "critical";
   assignee: { id: string; display_name: string; avatar_url: string | null } | null;
   due_date: string | null;
+  parent_task_id: string | null;
   task_labels: { label_id: string; labels: { id: string; name: string; color: string } | null }[];
 }
 
