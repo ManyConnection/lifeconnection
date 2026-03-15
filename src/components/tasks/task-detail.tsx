@@ -2,11 +2,11 @@
 
 import Link from "next/link";
 import { TaskStatusBadge } from "./task-status-badge";
-import { TaskPriorityBadge } from "./task-priority-badge";
+
 import { TaskComments } from "./task-comments";
 import { SubtaskAdder } from "./subtask-adder";
-import { deleteTask, updateTaskStatus } from "@/lib/actions/tasks";
-import { TASK_STATUSES } from "@/lib/constants";
+import { deleteTask, updateTaskStatus, updateTask } from "@/lib/actions/tasks";
+import { TASK_STATUSES, TASK_PRIORITIES } from "@/lib/constants";
 import { format } from "date-fns";
 import { Pencil, Trash2, ArrowLeft, Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -70,6 +70,16 @@ export function TaskDetail({ task, subtasks, parentTask, comments, projectId, pr
   const handleStatusChange = async (status: string) => {
     await updateTaskStatus(task.id, projectId, status);
     toast.success("ステータスを更新しました");
+  };
+
+  const handlePriorityChange = async (priority: string) => {
+    const result = await updateTask(task.id, projectId, { priority });
+    if (result?.error) {
+      toast.error(result.error);
+    } else {
+      toast.success("優先度を更新しました");
+      router.refresh();
+    }
   };
 
   return (
@@ -195,7 +205,17 @@ export function TaskDetail({ task, subtasks, parentTask, comments, projectId, pr
 
             <div>
               <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-2">Priority</span>
-              <TaskPriorityBadge priority={task.priority} />
+              <select
+                value={task.priority}
+                onChange={(e) => handlePriorityChange(e.target.value)}
+                className="w-full px-3.5 py-2.5 rounded-2xl bg-gray-50 border border-gray-100 text-sm text-gray-700 focus:outline-none cursor-pointer font-medium"
+              >
+                {TASK_PRIORITIES.map((p) => (
+                  <option key={p.value} value={p.value}>
+                    {p.label}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <div>
