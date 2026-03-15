@@ -14,7 +14,7 @@ import {
 import { BoardColumn } from "./board-column";
 import { TaskCard } from "@/components/tasks/task-card";
 import { updateTaskSortOrder } from "@/lib/actions/tasks";
-import { TASK_STATUSES } from "@/lib/constants";
+import { getProjectStatuses, type StatusConfig } from "@/lib/constants";
 import type { Database } from "@/lib/supabase/database.types";
 
 type TaskStatus = Database["public"]["Enums"]["task_status"];
@@ -34,12 +34,15 @@ interface Task {
 export function BoardView({
   tasks: initialTasks,
   projectId,
+  statusConfig,
 }: {
   tasks: Task[];
   projectId: string;
+  statusConfig?: StatusConfig | null;
 }) {
   const [tasks, setTasks] = useState(initialTasks);
   const [activeTask, setActiveTask] = useState<Task | null>(null);
+  const statuses = getProjectStatuses(statusConfig);
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 8 } })
@@ -58,7 +61,6 @@ export function BoardView({
     const taskId = active.id as string;
     const overStatus = over.id as string;
 
-    // Determine target status - if dropped on another task, find its status
     let targetStatus: TaskStatus;
     const overTask = tasks.find((t) => t.id === overStatus);
     if (overTask) {
@@ -70,7 +72,6 @@ export function BoardView({
     const task = tasks.find((t) => t.id === taskId);
     if (!task || task.status === targetStatus) return;
 
-    // Optimistic update
     setTasks((prev) =>
       prev.map((t) => (t.id === taskId ? { ...t, status: targetStatus } : t))
     );
@@ -86,12 +87,13 @@ export function BoardView({
       onDragEnd={handleDragEnd}
     >
       <div className="flex gap-4 overflow-x-auto pb-4">
-        {TASK_STATUSES.map((status) => (
+        {statuses.map((status) => (
           <BoardColumn
             key={status.value}
             status={status.value}
             tasks={tasks.filter((t) => t.status === status.value)}
             projectId={projectId}
+            statusConfig={statusConfig}
           />
         ))}
       </div>

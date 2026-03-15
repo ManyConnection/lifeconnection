@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { TASK_STATUSES, TASK_PRIORITIES } from "@/lib/constants";
+import { getProjectStatuses, getProjectPriorities, type StatusConfig, type PriorityConfig } from "@/lib/constants";
 import { Search } from "lucide-react";
 import { useState } from "react";
 
@@ -11,12 +11,16 @@ interface Props {
     user_id: string;
     profiles: { id: string; display_name: string } | null;
   }[];
+  statusConfig?: StatusConfig | null;
+  priorityConfig?: PriorityConfig | null;
 }
 
-export function TaskFilters({ members }: Props) {
+export function TaskFilters({ members, statusConfig, priorityConfig }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [search, setSearch] = useState(searchParams.get("q") ?? "");
+  const statuses = getProjectStatuses(statusConfig);
+  const priorities = getProjectPriorities(priorityConfig);
 
   const updateFilter = (key: string, value: string) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -54,7 +58,7 @@ export function TaskFilters({ members }: Props) {
         className={selectClass}
       >
         <option value="">All Status</option>
-        {TASK_STATUSES.map((s) => (
+        {statuses.map((s) => (
           <option key={s.value} value={s.value}>
             {s.label}
           </option>
@@ -67,7 +71,7 @@ export function TaskFilters({ members }: Props) {
         className={selectClass}
       >
         <option value="">All Priority</option>
-        {TASK_PRIORITIES.map((p) => (
+        {priorities.map((p) => (
           <option key={p.value} value={p.value}>
             {p.label}
           </option>

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { TaskStatusBadge } from "./task-status-badge";
 import { TaskPriorityBadge } from "./task-priority-badge";
 import { updateTaskStatus } from "@/lib/actions/tasks";
-import { TASK_STATUSES } from "@/lib/constants";
+import { getProjectStatuses, type StatusConfig, type PriorityConfig } from "@/lib/constants";
 import { format } from "date-fns";
 import { Plus } from "lucide-react";
 
@@ -23,10 +23,15 @@ interface Task {
 export function TaskListRow({
   task,
   projectId,
+  statusConfig,
+  priorityConfig,
 }: {
   task: Task;
   projectId: string;
+  statusConfig?: StatusConfig | null;
+  priorityConfig?: PriorityConfig | null;
 }) {
+  const statuses = getProjectStatuses(statusConfig);
   const isOverdue =
     task.due_date &&
     new Date(task.due_date) < new Date() &&
@@ -75,19 +80,19 @@ export function TaskListRow({
           onChange={(e) => handleStatusChange(e.target.value)}
           className="bg-transparent border-none text-xs cursor-pointer focus:outline-none p-0"
         >
-          {TASK_STATUSES.map((s) => (
+          {statuses.map((s) => (
             <option key={s.value} value={s.value}>
               {s.label}
             </option>
           ))}
         </select>
         <div className="mt-0.5">
-          <TaskStatusBadge status={task.status} />
+          <TaskStatusBadge status={task.status} statusConfig={statusConfig} />
         </div>
       </div>
 
       <div>
-        <TaskPriorityBadge priority={task.priority} />
+        <TaskPriorityBadge priority={task.priority} priorityConfig={priorityConfig} />
       </div>
 
       <div>

@@ -1,4 +1,5 @@
 import { TaskListRow } from "./task-list-row";
+import type { StatusConfig, PriorityConfig } from "@/lib/constants";
 
 interface Task {
   id: string;
@@ -16,10 +17,14 @@ export function TaskList({
   tasks,
   projectId,
   labels: _labels,
+  statusConfig,
+  priorityConfig,
 }: {
   tasks: Task[];
   projectId: string;
   labels: { id: string; name: string; color: string }[];
+  statusConfig?: StatusConfig | null;
+  priorityConfig?: PriorityConfig | null;
 }) {
   if (tasks.length === 0) {
     return (
@@ -40,7 +45,7 @@ export function TaskList({
         <span></span>
       </div>
       {tasks.map((task) => (
-        <TaskListRow key={task.id} task={task} projectId={projectId} />
+        <TaskListRow key={task.id} task={task} projectId={projectId} statusConfig={statusConfig} priorityConfig={priorityConfig} />
       ))}
     </div>
   );

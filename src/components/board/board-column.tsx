@@ -6,7 +6,7 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { TaskCard } from "@/components/tasks/task-card";
-import { getStatusConfig } from "@/lib/constants";
+import { getStatusConfig, type StatusConfig } from "@/lib/constants";
 import type { Database } from "@/lib/supabase/database.types";
 
 type TaskStatus = Database["public"]["Enums"]["task_status"];
@@ -26,13 +26,15 @@ export function BoardColumn({
   status,
   tasks,
   projectId,
+  statusConfig,
 }: {
   status: TaskStatus;
   tasks: Task[];
   projectId: string;
+  statusConfig?: StatusConfig | null;
 }) {
   const { setNodeRef, isOver } = useDroppable({ id: status });
-  const config = getStatusConfig(status);
+  const config = getStatusConfig(status, statusConfig);
 
   return (
     <div
