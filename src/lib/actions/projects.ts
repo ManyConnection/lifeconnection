@@ -151,10 +151,13 @@ export async function updateProjectConfig(
     .eq("id", projectId);
 
   if (error) {
-    return { error: "設定の更新に失敗しました" };
+    console.error("updateProjectConfig error:", error);
+    return { error: `設定の更新に失敗しました: ${error.message}` };
   }
 
-  revalidatePath(`/projects/${projectId}`);
+  revalidatePath(`/projects/${projectId}/settings`, "page");
+  revalidatePath(`/projects/${projectId}/tasks`, "page");
+  revalidatePath(`/projects/${projectId}/board`, "page");
   return { success: true };
 }
 

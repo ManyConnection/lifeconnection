@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { projectSchema, type ProjectInput } from "@/lib/validations/project";
@@ -35,6 +36,7 @@ const MEMBER_ROLES = [
 ] as const;
 
 export function ProjectSettingsForm({ project, members, labels }: Props) {
+  const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [newLabelName, setNewLabelName] = useState("");
@@ -136,6 +138,7 @@ export function ProjectSettingsForm({ project, members, labels }: Props) {
       toast.error(result.error);
     } else {
       toast.success("ステータス・優先度設定を保存しました");
+      router.refresh();
     }
     setConfigLoading(false);
   };
