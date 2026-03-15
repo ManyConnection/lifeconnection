@@ -72,38 +72,38 @@ export function TaskDetail({ task, comments, projectId, projectKey }: Props) {
       <div className="flex items-center gap-4 mb-6">
         <Link
           href={`/projects/${projectId}/tasks`}
-          className="text-gray-400 hover:text-sky-500 transition-colors cursor-pointer"
+          className="text-gray-300 hover:text-sky-500 transition-colors cursor-pointer"
         >
           <ArrowLeft size={20} />
         </Link>
-        <span className="text-gray-400 text-sm">
+        <span className="text-gray-400 text-sm font-bold">
           {projectKey}-{task.task_number}
         </span>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Main content */}
-        <div className="lg:col-span-2 space-y-6">
-          <div className="bg-white/70 backdrop-blur-sm border border-sky-100 rounded-2xl p-6 shadow-sm">
+        <div className="lg:col-span-2 space-y-5">
+          <div className="bg-white rounded-3xl p-7 shadow-sm border border-gray-100">
             <div className="flex items-start justify-between mb-4">
-              <h1 className="text-xl font-bold font-heading text-gray-800">{task.title}</h1>
-              <div className="flex gap-2">
+              <h1 className="text-xl font-extrabold font-heading text-gray-800">{task.title}</h1>
+              <div className="flex gap-1.5">
                 <Link
                   href={`/projects/${projectId}/tasks/${task.id}/edit`}
-                  className="p-2 rounded-lg hover:bg-sky-50 text-gray-400 hover:text-sky-500 transition-colors cursor-pointer"
+                  className="p-2 rounded-xl hover:bg-gray-50 text-gray-300 hover:text-sky-500 transition-colors cursor-pointer"
                 >
                   <Pencil size={16} />
                 </Link>
                 <button
                   onClick={handleDelete}
-                  className="p-2 rounded-lg hover:bg-rose-50 text-gray-400 hover:text-rose-500 transition-colors cursor-pointer"
+                  className="p-2 rounded-xl hover:bg-rose-50 text-gray-300 hover:text-rose-500 transition-colors cursor-pointer"
                 >
                   <Trash2 size={16} />
                 </button>
               </div>
             </div>
             {task.description && (
-              <p className="text-gray-600 text-sm whitespace-pre-wrap">
+              <p className="text-gray-600 text-sm whitespace-pre-wrap leading-relaxed">
                 {task.description}
               </p>
             )}
@@ -111,19 +111,19 @@ export function TaskDetail({ task, comments, projectId, projectKey }: Props) {
 
           {/* Subtasks */}
           {task.subtasks.length > 0 && (
-            <div className="bg-white/70 backdrop-blur-sm border border-sky-100 rounded-2xl p-6 shadow-sm">
-              <h2 className="text-sm font-semibold text-gray-600 mb-3">
+            <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
+              <h2 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">
                 Subtasks ({task.subtasks.length})
               </h2>
-              <div className="space-y-2">
+              <div className="space-y-1.5">
                 {task.subtasks.map((sub) => (
                   <Link
                     key={sub.id}
                     href={`/projects/${projectId}/tasks/${sub.id}`}
-                    className="flex items-center justify-between py-2 px-3 rounded-xl hover:bg-sky-50 transition-colors cursor-pointer"
+                    className="flex items-center justify-between py-2.5 px-4 rounded-2xl hover:bg-gray-50 transition-colors cursor-pointer"
                   >
-                    <span className="text-sm text-gray-700">
-                      <span className="text-gray-400">#{sub.task_number}</span>{" "}
+                    <span className="text-sm font-medium text-gray-700">
+                      <span className="text-gray-300 font-bold">#{sub.task_number}</span>{" "}
                       {sub.title}
                     </span>
                     <TaskStatusBadge status={sub.status as "open"} />
@@ -134,8 +134,8 @@ export function TaskDetail({ task, comments, projectId, projectKey }: Props) {
           )}
 
           {/* Comments */}
-          <div className="bg-white/70 backdrop-blur-sm border border-sky-100 rounded-2xl p-6 shadow-sm">
-            <h2 className="text-sm font-semibold text-gray-600 mb-4">
+          <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
+            <h2 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-5">
               Comments ({comments.length})
             </h2>
             <TaskComments
@@ -147,14 +147,14 @@ export function TaskDetail({ task, comments, projectId, projectKey }: Props) {
         </div>
 
         {/* Sidebar */}
-        <div className="space-y-4">
-          <div className="bg-white/70 backdrop-blur-sm border border-sky-100 rounded-2xl p-5 space-y-4 shadow-sm">
+        <div>
+          <div className="bg-white rounded-3xl p-6 space-y-5 shadow-sm border border-gray-100 sticky top-24">
             <div>
-              <span className="text-xs text-gray-400 block mb-1">Status</span>
+              <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-2">Status</span>
               <select
                 value={task.status}
                 onChange={(e) => handleStatusChange(e.target.value)}
-                className="w-full px-3 py-2 rounded-xl bg-white border border-sky-200 text-sm text-gray-700 focus:outline-none cursor-pointer"
+                className="w-full px-3.5 py-2.5 rounded-2xl bg-gray-50 border border-gray-100 text-sm text-gray-700 focus:outline-none cursor-pointer font-medium"
               >
                 {TASK_STATUSES.map((s) => (
                   <option key={s.value} value={s.value}>
@@ -165,18 +165,18 @@ export function TaskDetail({ task, comments, projectId, projectKey }: Props) {
             </div>
 
             <div>
-              <span className="text-xs text-gray-400 block mb-1">Priority</span>
+              <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-2">Priority</span>
               <TaskPriorityBadge priority={task.priority} />
             </div>
 
             <div>
-              <span className="text-xs text-gray-400 block mb-1">Assignee</span>
+              <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-2">Assignee</span>
               {task.assignee ? (
-                <div className="flex items-center gap-2">
-                  <div className="w-6 h-6 rounded-full bg-gradient-to-br from-sky-400 to-cyan-500 flex items-center justify-center text-[10px] text-white">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-7 h-7 rounded-full bg-gradient-to-br from-sky-400 to-teal-400 flex items-center justify-center text-[10px] font-bold text-white ring-2 ring-white">
                     {task.assignee.display_name.charAt(0).toUpperCase()}
                   </div>
-                  <span className="text-sm text-gray-700">
+                  <span className="text-sm font-medium text-gray-700">
                     {task.assignee.display_name}
                   </span>
                 </div>
@@ -187,8 +187,8 @@ export function TaskDetail({ task, comments, projectId, projectKey }: Props) {
 
             {task.start_date && (
               <div>
-                <span className="text-xs text-gray-400 block mb-1">Start Date</span>
-                <span className="text-sm text-gray-700">
+                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-2">Start Date</span>
+                <span className="text-sm font-medium text-gray-700">
                   {format(new Date(task.start_date), "yyyy/MM/dd")}
                 </span>
               </div>
@@ -196,9 +196,9 @@ export function TaskDetail({ task, comments, projectId, projectKey }: Props) {
 
             {task.due_date && (
               <div>
-                <span className="text-xs text-gray-400 block mb-1">Due Date</span>
+                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-2">Due Date</span>
                 <span
-                  className={`text-sm ${
+                  className={`text-sm font-medium ${
                     new Date(task.due_date) < new Date() &&
                     task.status !== "done" &&
                     task.status !== "closed"
@@ -213,14 +213,14 @@ export function TaskDetail({ task, comments, projectId, projectKey }: Props) {
 
             {task.task_labels.length > 0 && (
               <div>
-                <span className="text-xs text-gray-400 block mb-1">Labels</span>
-                <div className="flex flex-wrap gap-1">
+                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-2">Labels</span>
+                <div className="flex flex-wrap gap-1.5">
                   {task.task_labels.map((tl) =>
                     tl.labels ? (
                       <span
                         key={tl.label_id}
-                        className="px-2 py-0.5 rounded text-xs text-gray-600"
-                        style={{ backgroundColor: tl.labels.color + "20" }}
+                        className="px-2.5 py-1 rounded-full text-xs font-medium text-gray-600"
+                        style={{ backgroundColor: tl.labels.color + "18" }}
                       >
                         {tl.labels.name}
                       </span>
@@ -230,13 +230,13 @@ export function TaskDetail({ task, comments, projectId, projectKey }: Props) {
               </div>
             )}
 
-            <div>
-              <span className="text-xs text-gray-400 block mb-1">Created</span>
+            <div className="pt-3 border-t border-gray-50">
+              <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-2">Created</span>
               <span className="text-sm text-gray-500">
                 {format(new Date(task.created_at), "yyyy/MM/dd HH:mm")}
               </span>
               {task.creator && (
-                <span className="text-xs text-gray-400 block">
+                <span className="text-xs text-gray-400 block mt-0.5">
                   by {task.creator.display_name}
                 </span>
               )}

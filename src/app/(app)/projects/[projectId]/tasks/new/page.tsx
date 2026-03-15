@@ -14,8 +14,8 @@ export default async function NewTaskPage({
 
   return (
     <div className="max-w-2xl mx-auto">
-      <h2 className="text-xl font-bold font-heading text-gray-800 mb-6">New Task</h2>
-      <div className="bg-white/70 backdrop-blur-sm border border-sky-100 rounded-2xl p-6 shadow-sm">
+      <h2 className="text-xl font-extrabold font-heading text-gray-800 mb-6">New Task</h2>
+      <div className="bg-white rounded-3xl p-7 shadow-sm border border-gray-100">
         <TaskForm projectId={projectId} members={members} labels={labels} />
       </div>
     </div>

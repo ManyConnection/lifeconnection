@@ -38,8 +38,8 @@ export function TaskCard({ task, projectId }: TaskCardProps) {
       style={style}
       {...attributes}
       {...listeners}
-      className={`bg-white border border-sky-100 rounded-xl p-3 cursor-grab active:cursor-grabbing hover:border-sky-300 hover:shadow-sm transition-all ${
-        isDragging ? "opacity-50 shadow-lg shadow-sky-200/50" : ""
+      className={`bg-white border border-gray-100 rounded-2xl p-4 cursor-grab active:cursor-grabbing hover:shadow-md transition-all ${
+        isDragging ? "opacity-50 shadow-xl rotate-2" : ""
       }`}
     >
       <Link
@@ -49,17 +49,17 @@ export function TaskCard({ task, projectId }: TaskCardProps) {
           if (isDragging) e.preventDefault();
         }}
       >
-        <span className="text-[10px] text-gray-400">#{task.task_number}</span>
-        <p className="text-sm text-gray-700 mt-0.5 line-clamp-2">{task.title}</p>
+        <span className="text-[10px] font-bold text-gray-300">#{task.task_number}</span>
+        <p className="text-sm font-medium text-gray-700 mt-1 line-clamp-2 leading-snug">{task.title}</p>
 
         {task.task_labels.length > 0 && (
-          <div className="flex flex-wrap gap-1 mt-2">
+          <div className="flex flex-wrap gap-1.5 mt-3">
             {task.task_labels.map((tl) =>
               tl.labels ? (
                 <span
                   key={tl.label_id}
-                  className="px-1.5 py-0.5 rounded text-[10px] text-gray-600"
-                  style={{ backgroundColor: tl.labels.color + "20" }}
+                  className="px-2 py-0.5 rounded-full text-[10px] font-medium text-gray-600"
+                  style={{ backgroundColor: tl.labels.color + "18" }}
                 >
                   {tl.labels.name}
                 </span>
@@ -68,10 +68,10 @@ export function TaskCard({ task, projectId }: TaskCardProps) {
           </div>
         )}
 
-        <div className="flex items-center justify-between mt-2">
+        <div className="flex items-center justify-between mt-3 pt-3 border-t border-gray-50">
           <TaskPriorityBadge priority={task.priority} />
           {task.assignee && (
-            <div className="w-6 h-6 rounded-full bg-gradient-to-br from-sky-400 to-cyan-500 flex items-center justify-center text-[10px] text-white">
+            <div className="w-7 h-7 rounded-full bg-gradient-to-br from-sky-400 to-teal-400 flex items-center justify-center text-[10px] font-bold text-white ring-2 ring-white">
               {task.assignee.display_name.charAt(0).toUpperCase()}
             </div>
           )}

@@ -26,7 +26,7 @@ export async function AppHeader() {
   }
 
   return (
-    <header className="sticky top-0 z-30 h-16 border-b border-sky-100 bg-white/60 backdrop-blur-xl">
+    <header className="sticky top-0 z-30 h-[72px] bg-white/70 backdrop-blur-xl">
       <div className="flex items-center justify-between h-full px-6 lg:px-8">
         <div className="lg:hidden w-10" />
         <div className="flex-1" />

@@ -37,23 +37,23 @@ export function TaskListRow({
   };
 
   return (
-    <div className="grid grid-cols-[1fr_120px_100px_120px_100px] gap-2 px-4 py-3 border-b border-sky-100 hover:bg-sky-50/30 transition-colors items-center">
+    <div className="grid grid-cols-[1fr_120px_100px_120px_100px] gap-2 px-5 py-3.5 border-b border-gray-50 hover:bg-gray-50/50 transition-colors items-center">
       <div className="min-w-0">
         <Link
           href={`/projects/${projectId}/tasks/${task.id}`}
-          className="text-sm text-gray-700 hover:text-sky-600 transition-colors truncate block cursor-pointer"
+          className="text-sm font-medium text-gray-700 hover:text-sky-600 transition-colors truncate block cursor-pointer"
         >
-          <span className="text-gray-400 mr-2">#{task.task_number}</span>
+          <span className="text-gray-300 mr-2 font-bold">#{task.task_number}</span>
           {task.title}
         </Link>
         {task.task_labels.length > 0 && (
-          <div className="flex gap-1 mt-1">
+          <div className="flex gap-1.5 mt-1.5">
             {task.task_labels.map((tl) =>
               tl.labels ? (
                 <span
                   key={tl.label_id}
-                  className="inline-block px-1.5 py-0.5 rounded text-[10px] text-gray-600"
-                  style={{ backgroundColor: tl.labels.color + "20" }}
+                  className="inline-block px-2 py-0.5 rounded-full text-[10px] font-medium text-gray-500"
+                  style={{ backgroundColor: tl.labels.color + "18" }}
                 >
                   {tl.labels.name}
                 </span>
@@ -86,8 +86,8 @@ export function TaskListRow({
 
       <div>
         {task.assignee ? (
-          <div className="flex items-center gap-1.5">
-            <div className="w-6 h-6 rounded-full bg-gradient-to-br from-sky-400 to-cyan-500 flex items-center justify-center text-[10px] text-white shrink-0">
+          <div className="flex items-center gap-2">
+            <div className="w-6 h-6 rounded-full bg-gradient-to-br from-sky-400 to-teal-400 flex items-center justify-center text-[10px] font-bold text-white shrink-0 ring-2 ring-white">
               {task.assignee.display_name.charAt(0).toUpperCase()}
             </div>
             <span className="text-xs text-gray-500 truncate">
@@ -102,7 +102,7 @@ export function TaskListRow({
       <div>
         {task.due_date ? (
           <span
-            className={`text-xs ${isOverdue ? "text-rose-500" : "text-gray-500"}`}
+            className={`text-xs font-medium ${isOverdue ? "text-rose-500" : "text-gray-500"}`}
           >
             {format(new Date(task.due_date), "MM/dd")}
           </span>

@@ -34,17 +34,17 @@ export function TaskFilters({ members }: Props) {
   };
 
   const selectClass =
-    "px-3 py-1.5 rounded-lg bg-white border border-sky-200 text-sm text-gray-600 focus:outline-none focus:border-sky-400 appearance-none cursor-pointer";
+    "px-3 py-2 rounded-xl bg-white border border-gray-200 text-sm text-gray-600 focus:outline-none focus:border-sky-400 appearance-none cursor-pointer font-medium";
 
   return (
     <div className="flex items-center gap-2 flex-wrap">
       <form onSubmit={handleSearch} className="relative">
-        <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+        <Search size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-300" />
         <input
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search..."
-          className="pl-9 pr-3 py-1.5 rounded-lg bg-white border border-sky-200 text-sm text-gray-700 placeholder:text-gray-400 focus:outline-none focus:border-sky-400 w-48"
+          className="pl-9 pr-3 py-2 rounded-xl bg-white border border-gray-200 text-sm text-gray-700 placeholder:text-gray-300 focus:outline-none focus:border-sky-400 w-48 font-medium"
         />
       </form>
 

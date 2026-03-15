@@ -8,14 +8,14 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     <div className="min-h-screen text-gray-800">
       <BackgroundEffects />
       <AppSidebar />
-      <div className="lg:pl-64">
+      <div className="lg:pl-[240px]">
         <AppHeader />
-        <main className="p-6 lg:p-8">{children}</main>
+        <main className="px-5 pb-10 lg:px-10">{children}</main>
       </div>
       <Toaster
         theme="light"
         toastOptions={{
-          className: "bg-white border-sky-100 text-gray-800",
+          className: "bg-white border-gray-100 text-gray-800 shadow-lg",
         }}
       />
     </div>
