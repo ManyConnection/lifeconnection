@@ -20,8 +20,7 @@ export async function getTasks(
       `
       *,
       assignee:profiles!tasks_assignee_id_fkey(id, display_name, avatar_url),
-      task_labels(label_id, labels!task_labels_label_id_fkey(id, name, color)),
-      subtasks:tasks!tasks_parent_task_id_fkey(id)
+      task_labels(label_id, labels!task_labels_label_id_fkey(id, name, color))
     `
     )
     .eq("project_id", projectId)
