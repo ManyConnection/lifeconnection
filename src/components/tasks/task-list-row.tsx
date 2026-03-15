@@ -6,6 +6,7 @@ import { TaskPriorityBadge } from "./task-priority-badge";
 import { updateTaskStatus } from "@/lib/actions/tasks";
 import { TASK_STATUSES } from "@/lib/constants";
 import { format } from "date-fns";
+import { Plus } from "lucide-react";
 
 interface Task {
   id: string;
@@ -36,7 +37,7 @@ export function TaskListRow({
   };
 
   return (
-    <div className="grid grid-cols-[1fr_120px_100px_120px_100px] gap-2 px-5 py-3.5 border-b border-gray-50 hover:bg-gray-50/50 transition-colors items-center">
+    <div className="group grid grid-cols-[1fr_120px_100px_120px_100px_40px] gap-2 px-5 py-3.5 border-b border-gray-50 hover:bg-gray-50/50 transition-colors items-center">
       <div className="min-w-0">
         <Link
           href={`/projects/${projectId}/tasks/${task.id}`}
@@ -108,6 +109,16 @@ export function TaskListRow({
         ) : (
           <span className="text-xs text-gray-300">-</span>
         )}
+      </div>
+
+      <div>
+        <Link
+          href={`/projects/${projectId}/tasks/new?parent=${task.id}`}
+          className="opacity-0 group-hover:opacity-100 p-1.5 rounded-lg text-gray-300 hover:text-sky-500 hover:bg-sky-50 transition-all cursor-pointer"
+          title="子チケットを作成"
+        >
+          <Plus size={14} />
+        </Link>
       </div>
     </div>
   );

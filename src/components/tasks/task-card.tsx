@@ -3,6 +3,7 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { TaskPriorityBadge } from "./task-priority-badge";
+import { Plus } from "lucide-react";
 import Link from "next/link";
 
 interface TaskCardProps {
@@ -38,7 +39,7 @@ export function TaskCard({ task, projectId }: TaskCardProps) {
       style={style}
       {...attributes}
       {...listeners}
-      className={`bg-white border border-gray-100 rounded-2xl p-4 cursor-grab active:cursor-grabbing hover:shadow-md transition-all ${
+      className={`group bg-white border border-gray-100 rounded-2xl p-4 cursor-grab active:cursor-grabbing hover:shadow-md transition-all ${
         isDragging ? "opacity-50 shadow-xl rotate-2" : ""
       }`}
     >
@@ -70,12 +71,22 @@ export function TaskCard({ task, projectId }: TaskCardProps) {
 
         <div className="flex items-center justify-between mt-3 pt-3 border-t border-gray-50">
           <TaskPriorityBadge priority={task.priority} />
-          {task.assignee && (
-            <div className="w-7 h-7 rounded-full bg-gradient-to-br from-sky-400 to-teal-400 flex items-center justify-center text-[10px] font-bold text-white ring-2 ring-white">
-              {task.assignee.display_name.charAt(0).toUpperCase()}
-            </div>
-          )}
+          <div className="flex items-center gap-1.5">
+            {task.assignee && (
+              <div className="w-7 h-7 rounded-full bg-gradient-to-br from-sky-400 to-teal-400 flex items-center justify-center text-[10px] font-bold text-white ring-2 ring-white">
+                {task.assignee.display_name.charAt(0).toUpperCase()}
+              </div>
+            )}
+          </div>
         </div>
+      </Link>
+      <Link
+        href={`/projects/${projectId}/tasks/new?parent=${task.id}`}
+        className="opacity-0 group-hover:opacity-100 flex items-center gap-1.5 mt-2 pt-2 border-t border-dashed border-gray-100 text-[11px] text-gray-400 hover:text-sky-500 transition-all cursor-pointer"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <Plus size={12} />
+        子チケット作成
       </Link>
     </div>
   );

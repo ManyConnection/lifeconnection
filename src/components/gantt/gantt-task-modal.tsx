@@ -8,7 +8,7 @@ import { createComment, deleteComment } from "@/lib/actions/comments";
 import { createClient } from "@/lib/supabase/client";
 import { TASK_STATUSES, TASK_PRIORITIES } from "@/lib/constants";
 import { format } from "date-fns";
-import { X, Send, Trash2, ExternalLink, MessageSquare } from "lucide-react";
+import { X, Send, Trash2, ExternalLink, MessageSquare, Plus } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
@@ -202,6 +202,17 @@ export function GanttTaskModal({
                 </span>
               </div>
             )}
+          </div>
+
+          {/* Quick actions */}
+          <div className="border-t border-gray-100 pt-4 pb-1">
+            <Link
+              href={`/projects/${projectId}/tasks/new?parent=${task.id}`}
+              className="flex items-center gap-2 w-full px-4 py-2.5 rounded-2xl border-2 border-dashed border-gray-200 text-sm text-gray-400 hover:text-sky-500 hover:border-sky-300 transition-all cursor-pointer"
+            >
+              <Plus size={16} />
+              子チケットを作成
+            </Link>
           </div>
 
           {/* Comments */}
