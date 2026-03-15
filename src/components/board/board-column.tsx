@@ -36,18 +36,18 @@ export function BoardColumn({
   return (
     <div
       ref={setNodeRef}
-      className={`flex flex-col min-h-[300px] w-72 shrink-0 rounded-2xl border transition-colors ${
+      className={`flex flex-col min-h-[300px] w-72 shrink-0 rounded-2xl border transition-all ${
         isOver
-          ? "bg-white/[0.03] border-violet-500/30"
-          : "bg-slate-900/20 border-white/5"
+          ? "bg-pink-50 border-pink-300 shadow-sm"
+          : "bg-white/50 border-pink-100"
       }`}
     >
-      <div className="flex items-center gap-2 px-4 py-3 border-b border-white/5">
+      <div className="flex items-center gap-2 px-4 py-3 border-b border-pink-100">
         <span className={`w-2 h-2 rounded-full ${config.dotColor}`} />
         <span className={`text-sm font-medium ${config.color}`}>
           {config.label}
         </span>
-        <span className="text-xs text-slate-500 ml-auto">{tasks.length}</span>
+        <span className="text-xs text-gray-400 ml-auto">{tasks.length}</span>
       </div>
       <SortableContext
         items={tasks.map((t) => t.id)}

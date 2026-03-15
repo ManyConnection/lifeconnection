@@ -16,7 +16,7 @@ export default async function DashboardPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-white">Dashboard</h1>
+      <h1 className="text-2xl font-bold font-heading text-gray-800">Dashboard</h1>
 
       {/* KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -24,13 +24,13 @@ export default async function DashboardPage() {
           title="Total Tasks"
           value={data.totalTasks}
           icon={<ListTodo size={20} />}
-          color="violet"
+          color="pink"
         />
         <KpiCard
           title="In Progress"
           value={data.inProgressTasks}
           icon={<Clock size={20} />}
-          color="cyan"
+          color="violet"
         />
         <KpiCard
           title="Completion Rate"
@@ -48,20 +48,20 @@ export default async function DashboardPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Status Distribution */}
-        <div className="bg-slate-900/40 border border-white/5 rounded-2xl p-6">
-          <h2 className="text-sm font-semibold text-slate-300 mb-4">
+        <div className="bg-white/70 backdrop-blur-sm border border-pink-100 rounded-2xl p-6 shadow-sm">
+          <h2 className="text-sm font-semibold text-gray-600 mb-4">
             Status Distribution
           </h2>
           <StatusChart distribution={data.statusDistribution} total={data.totalTasks} />
         </div>
 
         {/* Project Progress */}
-        <div className="bg-slate-900/40 border border-white/5 rounded-2xl p-6">
-          <h2 className="text-sm font-semibold text-slate-300 mb-4">
+        <div className="bg-white/70 backdrop-blur-sm border border-pink-100 rounded-2xl p-6 shadow-sm">
+          <h2 className="text-sm font-semibold text-gray-600 mb-4">
             Project Progress
           </h2>
           {data.projectStats.length === 0 ? (
-            <p className="text-slate-500 text-sm">プロジェクトがありません</p>
+            <p className="text-gray-400 text-sm">プロジェクトがありません</p>
           ) : (
             <div className="space-y-4">
               {data.projectStats.map((p) => (
@@ -71,14 +71,14 @@ export default async function DashboardPage() {
                   className="block group"
                 >
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-sm text-white group-hover:text-violet-300 transition-colors">
+                    <span className="text-sm text-gray-700 group-hover:text-pink-600 transition-colors">
                       {p.name}
                     </span>
-                    <span className="text-xs text-slate-500">
+                    <span className="text-xs text-gray-400">
                       {p.doneTasks}/{p.totalTasks}
                     </span>
                   </div>
-                  <div className="h-2 bg-slate-800 rounded-full overflow-hidden">
+                  <div className="h-2 bg-pink-100 rounded-full overflow-hidden">
                     <div
                       className="h-full rounded-full transition-all"
                       style={{
@@ -94,8 +94,8 @@ export default async function DashboardPage() {
         </div>
 
         {/* Completion Ring */}
-        <div className="bg-slate-900/40 border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-center">
-          <h2 className="text-sm font-semibold text-slate-300 mb-4">
+        <div className="bg-white/70 backdrop-blur-sm border border-pink-100 rounded-2xl p-6 shadow-sm flex flex-col items-center justify-center">
+          <h2 className="text-sm font-semibold text-gray-600 mb-4">
             Overall Completion
           </h2>
           <ProgressRing percentage={data.completionRate} />
@@ -104,8 +104,8 @@ export default async function DashboardPage() {
 
       {/* Overdue Tasks */}
       {data.overdueTasks.length > 0 && (
-        <div className="bg-slate-900/40 border border-white/5 rounded-2xl p-6">
-          <h2 className="text-sm font-semibold text-rose-400 mb-4">
+        <div className="bg-white/70 backdrop-blur-sm border border-rose-200 rounded-2xl p-6 shadow-sm">
+          <h2 className="text-sm font-semibold text-rose-500 mb-4">
             Overdue Tasks
           </h2>
           <OverdueTasksList tasks={data.overdueTasks} />

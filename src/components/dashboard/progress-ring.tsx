@@ -13,7 +13,7 @@ export function ProgressRing({ percentage }: { percentage: number }) {
           cy="70"
           r={radius}
           fill="none"
-          stroke="rgba(148,163,184,0.1)"
+          stroke="rgba(236,72,153,0.1)"
           strokeWidth="8"
         />
         <circle
@@ -30,14 +30,14 @@ export function ProgressRing({ percentage }: { percentage: number }) {
         />
         <defs>
           <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#8b5cf6" />
-            <stop offset="100%" stopColor="#6366f1" />
+            <stop offset="0%" stopColor="#ec4899" />
+            <stop offset="100%" stopColor="#f43f5e" />
           </linearGradient>
         </defs>
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="text-3xl font-bold text-white">{percentage}%</span>
-        <span className="text-xs text-slate-500">Complete</span>
+        <span className="text-3xl font-bold text-gray-800">{percentage}%</span>
+        <span className="text-xs text-gray-400">Complete</span>
       </div>
     </div>
   );

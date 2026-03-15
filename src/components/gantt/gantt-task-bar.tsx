@@ -1,6 +1,5 @@
 "use client";
 
-import { getStatusConfig } from "@/lib/constants";
 import Link from "next/link";
 
 interface Props {
@@ -15,11 +14,11 @@ interface Props {
 }
 
 const statusGradients: Record<string, string> = {
-  open: "from-slate-500 to-slate-600",
-  in_progress: "from-cyan-500 to-cyan-600",
-  in_review: "from-violet-500 to-violet-600",
-  done: "from-emerald-500 to-emerald-600",
-  closed: "from-slate-600 to-slate-700",
+  open: "from-gray-400 to-gray-500",
+  in_progress: "from-pink-400 to-pink-500",
+  in_review: "from-violet-400 to-violet-500",
+  done: "from-emerald-400 to-emerald-500",
+  closed: "from-gray-500 to-gray-600",
 };
 
 export function GanttTaskBar({ task, left, width, projectId }: Props) {

@@ -20,18 +20,18 @@ export function ProjectHeader({
   const basePath = `/projects/${project.id}`;
 
   return (
-    <div className="border-b border-white/5">
+    <div className="border-b border-pink-100">
       <div className="px-6 lg:px-8 pt-6 pb-0">
         <div className="flex items-center gap-3 mb-4">
           <div
-            className="w-8 h-8 rounded-lg flex items-center justify-center text-white text-sm font-bold"
+            className="w-8 h-8 rounded-lg flex items-center justify-center text-white text-sm font-bold shadow-sm"
             style={{ backgroundColor: project.color }}
           >
             {project.key.charAt(0)}
           </div>
           <div>
-            <h1 className="text-xl font-bold text-white">{project.name}</h1>
-            <p className="text-xs text-slate-500">{project.key}</p>
+            <h1 className="text-xl font-bold font-heading text-gray-800">{project.name}</h1>
+            <p className="text-xs text-gray-400">{project.key}</p>
           </div>
         </div>
         <nav className="flex gap-1">
@@ -42,10 +42,10 @@ export function ProjectHeader({
               <Link
                 key={tab.href}
                 href={fullPath}
-                className={`flex items-center gap-2 px-4 py-2.5 text-sm font-medium rounded-t-lg transition-colors border-b-2 ${
+                className={`flex items-center gap-2 px-4 py-2.5 text-sm font-medium rounded-t-lg transition-colors border-b-2 cursor-pointer ${
                   isActive
-                    ? "border-violet-500 text-white bg-white/5"
-                    : "border-transparent text-slate-400 hover:text-white hover:bg-white/5"
+                    ? "border-pink-500 text-pink-600 bg-pink-50/50"
+                    : "border-transparent text-gray-400 hover:text-pink-500 hover:bg-pink-50/30"
                 }`}
               >
                 <tab.icon size={16} />

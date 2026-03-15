@@ -17,15 +17,15 @@ export function GanttToolbar({
 
   return (
     <div className="flex items-center gap-2">
-      <span className="text-sm text-slate-400 mr-2">Zoom:</span>
+      <span className="text-sm text-gray-500 mr-2">Zoom:</span>
       {levels.map((level) => (
         <button
           key={level.value}
           onClick={() => onZoomChange(level.value)}
-          className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+          className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors cursor-pointer ${
             zoom === level.value
-              ? "bg-violet-500/20 text-violet-300 border border-violet-500/30"
-              : "bg-slate-800/50 text-slate-400 border border-white/5 hover:bg-white/5"
+              ? "bg-pink-50 text-pink-600 border border-pink-200"
+              : "bg-white text-gray-500 border border-pink-100 hover:bg-pink-50/50"
           }`}
         >
           {level.label}

@@ -32,7 +32,7 @@ export default async function TasksPage({
         <TaskFilters members={members} />
         <Link
           href={`/projects/${projectId}/tasks/new`}
-          className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-violet-500 to-indigo-600 text-white text-sm font-medium hover:from-violet-600 hover:to-indigo-700 transition-all"
+          className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-pink-500 to-rose-500 text-white text-sm font-medium hover:from-pink-600 hover:to-rose-600 transition-all shadow-md shadow-pink-200 cursor-pointer"
         >
           <Plus size={16} />
           New Task

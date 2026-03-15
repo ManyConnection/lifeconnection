@@ -22,13 +22,13 @@ export function OverdueTasksList({ tasks }: { tasks: OverdueTask[] }) {
               ? `/projects/${task.project.id}/tasks/${task.id}`
               : "#"
           }
-          className="flex items-center justify-between py-2 px-3 rounded-xl hover:bg-white/5 transition-colors"
+          className="flex items-center justify-between py-2 px-3 rounded-xl hover:bg-rose-50 transition-colors cursor-pointer"
         >
           <div className="flex items-center gap-3 min-w-0">
             <div className="min-w-0">
-              <p className="text-sm text-white truncate">
+              <p className="text-sm text-gray-700 truncate">
                 {task.project && (
-                  <span className="text-slate-500">{task.project.key}-{task.task_number} </span>
+                  <span className="text-gray-400">{task.project.key}-{task.task_number} </span>
                 )}
                 {task.title}
               </p>
@@ -37,7 +37,7 @@ export function OverdueTasksList({ tasks }: { tasks: OverdueTask[] }) {
           <div className="flex items-center gap-3 shrink-0">
             <TaskPriorityBadge priority={task.priority as "low" | "medium" | "high" | "critical"} />
             {task.due_date && (
-              <span className="text-xs text-rose-400">
+              <span className="text-xs text-rose-500">
                 {format(new Date(task.due_date), "MM/dd")}
               </span>
             )}

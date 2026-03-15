@@ -38,8 +38,8 @@ export function TaskCard({ task, projectId }: TaskCardProps) {
       style={style}
       {...attributes}
       {...listeners}
-      className={`bg-slate-800/60 border border-white/5 rounded-xl p-3 cursor-grab active:cursor-grabbing hover:border-white/10 transition-colors ${
-        isDragging ? "opacity-50 shadow-xl shadow-violet-500/10" : ""
+      className={`bg-white border border-pink-100 rounded-xl p-3 cursor-grab active:cursor-grabbing hover:border-pink-300 hover:shadow-sm transition-all ${
+        isDragging ? "opacity-50 shadow-lg shadow-pink-200/50" : ""
       }`}
     >
       <Link
@@ -49,8 +49,8 @@ export function TaskCard({ task, projectId }: TaskCardProps) {
           if (isDragging) e.preventDefault();
         }}
       >
-        <span className="text-[10px] text-slate-500">#{task.task_number}</span>
-        <p className="text-sm text-white mt-0.5 line-clamp-2">{task.title}</p>
+        <span className="text-[10px] text-gray-400">#{task.task_number}</span>
+        <p className="text-sm text-gray-700 mt-0.5 line-clamp-2">{task.title}</p>
 
         {task.task_labels.length > 0 && (
           <div className="flex flex-wrap gap-1 mt-2">
@@ -58,8 +58,8 @@ export function TaskCard({ task, projectId }: TaskCardProps) {
               tl.labels ? (
                 <span
                   key={tl.label_id}
-                  className="px-1.5 py-0.5 rounded text-[10px] text-white/70"
-                  style={{ backgroundColor: tl.labels.color + "25" }}
+                  className="px-1.5 py-0.5 rounded text-[10px] text-gray-600"
+                  style={{ backgroundColor: tl.labels.color + "20" }}
                 >
                   {tl.labels.name}
                 </span>
@@ -71,7 +71,7 @@ export function TaskCard({ task, projectId }: TaskCardProps) {
         <div className="flex items-center justify-between mt-2">
           <TaskPriorityBadge priority={task.priority} />
           {task.assignee && (
-            <div className="w-6 h-6 rounded-full bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center text-[10px] text-white">
+            <div className="w-6 h-6 rounded-full bg-gradient-to-br from-pink-400 to-rose-500 flex items-center justify-center text-[10px] text-white">
               {task.assignee.display_name.charAt(0).toUpperCase()}
             </div>
           )}

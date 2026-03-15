@@ -9,10 +9,6 @@ import {
   addDays,
   differenceInDays,
   format,
-  startOfWeek,
-  startOfMonth,
-  addWeeks,
-  addMonths,
   eachDayOfInterval,
   eachWeekOfInterval,
   eachMonthOfInterval,
@@ -120,35 +116,35 @@ export function GanttView({
 
       {tasks.length === 0 ? (
         <div className="text-center py-16">
-          <p className="text-slate-500">
+          <p className="text-gray-400">
             開始日が設定されたタスクがありません
           </p>
         </div>
       ) : (
-        <div className="bg-slate-900/40 border border-white/5 rounded-2xl overflow-hidden">
+        <div className="bg-white/70 backdrop-blur-sm border border-pink-100 rounded-2xl overflow-hidden shadow-sm">
           <div className="overflow-x-auto">
             <div style={{ minWidth: totalWidth + 280 }}>
               {/* Header */}
-              <div className="flex border-b border-white/5">
-                <div className="w-[280px] shrink-0 px-4 py-2 text-xs font-medium text-slate-500 border-r border-white/5">
+              <div className="flex border-b border-pink-100">
+                <div className="w-[280px] shrink-0 px-4 py-2 text-xs font-medium text-gray-400 border-r border-pink-100">
                   Task
                 </div>
                 <div className="flex">
                   {columns.map((col, i) => (
                     <div
                       key={i}
-                      className={`text-center border-r border-white/5 py-2 ${
+                      className={`text-center border-r border-pink-50 py-2 ${
                         isToday(col)
-                          ? "bg-violet-500/10"
+                          ? "bg-pink-50"
                           : ""
                       }`}
                       style={{ width: colWidth }}
                     >
-                      <div className="text-[10px] text-slate-400">
+                      <div className="text-[10px] text-gray-500">
                         {formatHeader(col)}
                       </div>
                       {zoom === "day" && (
-                        <div className="text-[9px] text-slate-600">
+                        <div className="text-[9px] text-gray-300">
                           {formatSubHeader(col)}
                         </div>
                       )}
@@ -168,11 +164,11 @@ export function GanttView({
                 return (
                   <div
                     key={task.id}
-                    className="flex border-b border-white/5 hover:bg-white/[0.02]"
+                    className="flex border-b border-pink-50 hover:bg-pink-50/30"
                   >
-                    <div className="w-[280px] shrink-0 px-4 py-3 text-sm text-white border-r border-white/5 flex items-center gap-2 truncate">
+                    <div className="w-[280px] shrink-0 px-4 py-3 text-sm text-gray-700 border-r border-pink-100 flex items-center gap-2 truncate">
                       <span className={`w-2 h-2 rounded-full shrink-0 ${config.dotColor}`} />
-                      <span className="text-slate-500 text-xs">
+                      <span className="text-gray-400 text-xs">
                         #{task.task_number}
                       </span>
                       <span className="truncate">{task.title}</span>
@@ -220,7 +216,7 @@ export function GanttView({
                     <path
                       d={`M${x1},${y1} C${x1 + 20},${y1} ${x2 - 20},${y2} ${x2},${y2}`}
                       fill="none"
-                      stroke="rgba(139,92,246,0.4)"
+                      stroke="rgba(236,72,153,0.4)"
                       strokeWidth={1.5}
                       markerEnd="url(#arrowhead)"
                     />
@@ -238,7 +234,7 @@ export function GanttView({
                 >
                   <polygon
                     points="0 0, 6 3, 0 6"
-                    fill="rgba(139,92,246,0.6)"
+                    fill="rgba(236,72,153,0.6)"
                   />
                 </marker>
               </defs>

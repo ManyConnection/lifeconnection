@@ -24,14 +24,14 @@ export function TaskList({
   if (tasks.length === 0) {
     return (
       <div className="text-center py-16">
-        <p className="text-slate-500">タスクがありません</p>
+        <p className="text-gray-400">タスクがありません</p>
       </div>
     );
   }
 
   return (
-    <div className="bg-slate-900/40 border border-white/5 rounded-2xl overflow-hidden">
-      <div className="grid grid-cols-[1fr_120px_100px_120px_100px] gap-2 px-4 py-3 text-xs font-medium text-slate-500 border-b border-white/5">
+    <div className="bg-white/70 backdrop-blur-sm border border-pink-100 rounded-2xl overflow-hidden shadow-sm">
+      <div className="grid grid-cols-[1fr_120px_100px_120px_100px] gap-2 px-4 py-3 text-xs font-medium text-gray-400 border-b border-pink-100">
         <span>Task</span>
         <span>Status</span>
         <span>Priority</span>

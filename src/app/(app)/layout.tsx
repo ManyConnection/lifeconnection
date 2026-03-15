@@ -5,7 +5,7 @@ import { Toaster } from "@/components/ui/sonner";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen text-white">
+    <div className="min-h-screen text-gray-800">
       <BackgroundEffects />
       <AppSidebar />
       <div className="lg:pl-64">
@@ -13,9 +13,9 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         <main className="p-6 lg:p-8">{children}</main>
       </div>
       <Toaster
-        theme="dark"
+        theme="light"
         toastOptions={{
-          className: "bg-slate-900 border-white/10 text-white",
+          className: "bg-white border-pink-100 text-gray-800",
         }}
       />
     </div>

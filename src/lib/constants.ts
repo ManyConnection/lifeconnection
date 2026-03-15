@@ -13,37 +13,37 @@ export const TASK_STATUSES: {
   {
     value: "open",
     label: "Open",
-    color: "text-slate-400",
-    bgColor: "bg-slate-500/10 border-slate-500/20",
-    dotColor: "bg-slate-400",
+    color: "text-gray-500",
+    bgColor: "bg-gray-100 border-gray-200",
+    dotColor: "bg-gray-400",
   },
   {
     value: "in_progress",
     label: "In Progress",
-    color: "text-cyan-400",
-    bgColor: "bg-cyan-500/10 border-cyan-500/20",
-    dotColor: "bg-cyan-400",
+    color: "text-pink-600",
+    bgColor: "bg-pink-50 border-pink-200",
+    dotColor: "bg-pink-400",
   },
   {
     value: "in_review",
     label: "In Review",
-    color: "text-violet-400",
-    bgColor: "bg-violet-500/10 border-violet-500/20",
+    color: "text-violet-600",
+    bgColor: "bg-violet-50 border-violet-200",
     dotColor: "bg-violet-400",
   },
   {
     value: "done",
     label: "Done",
-    color: "text-emerald-400",
-    bgColor: "bg-emerald-500/10 border-emerald-500/20",
+    color: "text-emerald-600",
+    bgColor: "bg-emerald-50 border-emerald-200",
     dotColor: "bg-emerald-400",
   },
   {
     value: "closed",
     label: "Closed",
-    color: "text-slate-500",
-    bgColor: "bg-slate-600/10 border-slate-600/20",
-    dotColor: "bg-slate-500",
+    color: "text-gray-400",
+    bgColor: "bg-gray-50 border-gray-200",
+    dotColor: "bg-gray-400",
   },
 ];
 
@@ -56,36 +56,36 @@ export const TASK_PRIORITIES: {
   {
     value: "low",
     label: "Low",
-    color: "text-slate-400",
-    bgColor: "bg-slate-500/10 border-slate-500/20",
+    color: "text-gray-500",
+    bgColor: "bg-gray-100 border-gray-200",
   },
   {
     value: "medium",
     label: "Medium",
-    color: "text-amber-400",
-    bgColor: "bg-amber-500/10 border-amber-500/20",
+    color: "text-amber-600",
+    bgColor: "bg-amber-50 border-amber-200",
   },
   {
     value: "high",
     label: "High",
-    color: "text-orange-400",
-    bgColor: "bg-orange-500/10 border-orange-500/20",
+    color: "text-orange-600",
+    bgColor: "bg-orange-50 border-orange-200",
   },
   {
     value: "critical",
     label: "Critical",
-    color: "text-rose-400",
-    bgColor: "bg-rose-500/10 border-rose-500/20",
+    color: "text-rose-600",
+    bgColor: "bg-rose-50 border-rose-200",
   },
 ];
 
 export const PROJECT_COLORS = [
+  "#ec4899", // pink
+  "#f43f5e", // rose
   "#8b5cf6", // violet
   "#06b6d4", // cyan
   "#10b981", // emerald
   "#f59e0b", // amber
-  "#ef4444", // red
-  "#ec4899", // pink
   "#3b82f6", // blue
   "#f97316", // orange
 ];

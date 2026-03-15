@@ -10,7 +10,7 @@ export function StatusChart({
   total: number;
 }) {
   if (total === 0) {
-    return <p className="text-slate-500 text-sm">データがありません</p>;
+    return <p className="text-gray-400 text-sm">データがありません</p>;
   }
 
   return (
@@ -23,13 +23,13 @@ export function StatusChart({
             <div className="flex items-center justify-between mb-1">
               <div className="flex items-center gap-2">
                 <span className={`w-2 h-2 rounded-full ${status.dotColor}`} />
-                <span className="text-xs text-slate-300">{status.label}</span>
+                <span className="text-xs text-gray-600">{status.label}</span>
               </div>
-              <span className="text-xs text-slate-500">
+              <span className="text-xs text-gray-400">
                 {count} ({percentage}%)
               </span>
             </div>
-            <div className="h-1.5 bg-slate-800 rounded-full overflow-hidden">
+            <div className="h-1.5 bg-pink-100 rounded-full overflow-hidden">
               <div
                 className={`h-full rounded-full ${status.dotColor} transition-all`}
                 style={{ width: `${percentage}%` }}

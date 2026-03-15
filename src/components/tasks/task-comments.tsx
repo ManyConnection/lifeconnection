@@ -48,25 +48,25 @@ export function TaskComments({
       {comments.map((comment) => (
         <div key={comment.id} className="group">
           <div className="flex items-start gap-3">
-            <div className="w-7 h-7 rounded-full bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center text-[10px] text-white shrink-0 mt-0.5">
+            <div className="w-7 h-7 rounded-full bg-gradient-to-br from-pink-400 to-rose-500 flex items-center justify-center text-[10px] text-white shrink-0 mt-0.5">
               {(comment.user?.display_name ?? "?").charAt(0).toUpperCase()}
             </div>
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2">
-                <span className="text-sm font-medium text-white">
+                <span className="text-sm font-medium text-gray-700">
                   {comment.user?.display_name}
                 </span>
-                <span className="text-xs text-slate-500">
+                <span className="text-xs text-gray-400">
                   {format(new Date(comment.created_at), "MM/dd HH:mm")}
                 </span>
                 <button
                   onClick={() => handleDelete(comment.id)}
-                  className="opacity-0 group-hover:opacity-100 text-slate-500 hover:text-rose-400 transition-all ml-auto"
+                  className="opacity-0 group-hover:opacity-100 text-gray-400 hover:text-rose-500 transition-all ml-auto cursor-pointer"
                 >
                   <Trash2 size={12} />
                 </button>
               </div>
-              <p className="text-sm text-slate-300 mt-1 whitespace-pre-wrap">
+              <p className="text-sm text-gray-600 mt-1 whitespace-pre-wrap">
                 {comment.content}
               </p>
             </div>
@@ -74,17 +74,17 @@ export function TaskComments({
         </div>
       ))}
 
-      <form onSubmit={handleSubmit} className="flex gap-2 pt-2 border-t border-white/5">
+      <form onSubmit={handleSubmit} className="flex gap-2 pt-2 border-t border-pink-100">
         <input
           value={content}
           onChange={(e) => setContent(e.target.value)}
           placeholder="コメントを入力..."
-          className="flex-1 px-4 py-2 rounded-xl bg-slate-800/50 border border-white/10 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:border-violet-500/50"
+          className="flex-1 px-4 py-2 rounded-xl bg-white border border-pink-200 text-sm text-gray-700 placeholder:text-gray-400 focus:outline-none focus:border-pink-400"
         />
         <button
           type="submit"
           disabled={loading || !content.trim()}
-          className="px-3 py-2 rounded-xl bg-violet-500/20 text-violet-400 hover:bg-violet-500/30 transition-colors disabled:opacity-50"
+          className="px-3 py-2 rounded-xl bg-pink-50 text-pink-500 hover:bg-pink-100 transition-colors disabled:opacity-50 cursor-pointer"
         >
           <Send size={16} />
         </button>

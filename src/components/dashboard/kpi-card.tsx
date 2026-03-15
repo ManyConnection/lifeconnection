@@ -1,23 +1,23 @@
 const colorMap = {
-  violet: {
-    bg: "bg-violet-500/10",
-    border: "border-violet-500/20",
-    icon: "text-violet-400",
+  pink: {
+    bg: "bg-pink-50",
+    border: "border-pink-200",
+    icon: "text-pink-500",
   },
-  cyan: {
-    bg: "bg-cyan-500/10",
-    border: "border-cyan-500/20",
-    icon: "text-cyan-400",
+  violet: {
+    bg: "bg-violet-50",
+    border: "border-violet-200",
+    icon: "text-violet-500",
   },
   emerald: {
-    bg: "bg-emerald-500/10",
-    border: "border-emerald-500/20",
-    icon: "text-emerald-400",
+    bg: "bg-emerald-50",
+    border: "border-emerald-200",
+    icon: "text-emerald-500",
   },
   rose: {
-    bg: "bg-rose-500/10",
-    border: "border-rose-500/20",
-    icon: "text-rose-400",
+    bg: "bg-rose-50",
+    border: "border-rose-200",
+    icon: "text-rose-500",
   },
 };
 
@@ -36,13 +36,13 @@ export function KpiCard({
 
   return (
     <div
-      className={`${c.bg} border ${c.border} rounded-2xl p-5 transition-colors hover:bg-opacity-20`}
+      className={`${c.bg} border ${c.border} rounded-2xl p-5 transition-all hover:shadow-md hover:-translate-y-0.5 cursor-default`}
     >
       <div className="flex items-center justify-between mb-3">
-        <span className="text-xs font-medium text-slate-400">{title}</span>
+        <span className="text-xs font-medium text-gray-500">{title}</span>
         <div className={c.icon}>{icon}</div>
       </div>
-      <div className="text-2xl font-bold text-white">{value}</div>
+      <div className="text-2xl font-bold text-gray-800">{value}</div>
     </div>
   );
 }
