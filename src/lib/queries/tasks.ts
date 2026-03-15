@@ -55,15 +55,29 @@ export const getTask = cache(async (taskId: string) => {
       `
       *,
       assignee:profiles!tasks_assignee_id_fkey(id, display_name, avatar_url),
-      creator:profiles!tasks_created_by_fkey(id, display_name, avatar_url),
       task_labels(label_id, labels!task_labels_label_id_fkey(id, name, color))
     `
     )
     .eq("id", taskId)
     .single();
 
-  if (error) return null;
-  return data;
+  if (error) {
+    console.error("getTask error:", error.message, error.details, error.hint);
+    return null;
+  }
+
+  // creator を別途取得（FK名の曖昧さ回避）
+  let creator: { id: string; display_name: string } | null = null;
+  if (data.created_by) {
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("id, display_name")
+      .eq("id", data.created_by)
+      .single();
+    creator = profile;
+  }
+
+  return { ...data, creator };
 });
 
 // 親タスクを別クエリで取得
