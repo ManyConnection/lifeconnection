@@ -22,7 +22,7 @@ export async function createProject(formData: {
   } = await supabase.auth.getUser();
   if (!user) return { error: "認証が必要です" };
 
-  const { data, error } = await supabase
+  const { error } = await supabase
     .from("projects")
     .insert({
       name: parsed.data.name,
@@ -30,9 +30,7 @@ export async function createProject(formData: {
       description: parsed.data.description ?? "",
       color: parsed.data.color ?? "#8b5cf6",
       owner_id: user.id,
-    })
-    .select()
-    .single();
+    });
 
   if (error) {
     if (error.code === "23505") {
@@ -41,9 +39,16 @@ export async function createProject(formData: {
     return { error: `作成失敗: ${error.message} (${error.code})` };
   }
 
+  // トリガーでメンバー追加後に別途取得
+  const { data: project } = await supabase
+    .from("projects")
+    .select("id")
+    .eq("key", parsed.data.key)
+    .single();
+
   revalidatePath("/projects");
   revalidatePath("/dashboard");
-  redirect(`/projects/${data.id}/tasks`);
+  redirect(`/projects/${project?.id ?? ""}/tasks`);
 }
 
 export async function updateProject(
