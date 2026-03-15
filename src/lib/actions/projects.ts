@@ -38,7 +38,7 @@ export async function createProject(formData: {
     if (error.code === "23505") {
       return { error: "このプロジェクトキーは既に使用されています" };
     }
-    return { error: "プロジェクトの作成に失敗しました" };
+    return { error: `作成失敗: ${error.message} (${error.code})` };
   }
 
   revalidatePath("/projects");
