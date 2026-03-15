@@ -43,7 +43,7 @@ export async function getTasks(
   }
 
   const { data, error } = await query;
-  if (error) throw error;
+  if (error) return [];
   return data;
 }
 
@@ -64,7 +64,7 @@ export async function getTask(taskId: string) {
     .eq("id", taskId)
     .single();
 
-  if (error) throw error;
+  if (error) return null;
   return data;
 }
 
@@ -81,7 +81,7 @@ export async function getTaskComments(taskId: string) {
     .eq("task_id", taskId)
     .order("created_at", { ascending: true });
 
-  if (error) throw error;
+  if (error) return [];
   return data;
 }
 
@@ -100,7 +100,7 @@ export async function getTasksForBoard(projectId: string) {
     .is("parent_task_id", null)
     .order("sort_order", { ascending: true });
 
-  if (error) throw error;
+  if (error) return [];
   return data;
 }
 
@@ -119,7 +119,7 @@ export async function getTasksForGantt(projectId: string) {
     .not("start_date", "is", null)
     .order("start_date", { ascending: true });
 
-  if (tasksError) throw tasksError;
+  if (tasksError) return { tasks: [], dependencies: [] };
 
   const { data: dependencies, error: depsError } = await supabase
     .from("task_dependencies")
@@ -129,7 +129,7 @@ export async function getTasksForGantt(projectId: string) {
       (tasks ?? []).map((t) => t.id)
     );
 
-  if (depsError) throw depsError;
+  if (depsError) return { tasks: tasks ?? [], dependencies: [] };
 
   return { tasks: tasks ?? [], dependencies: dependencies ?? [] };
 }

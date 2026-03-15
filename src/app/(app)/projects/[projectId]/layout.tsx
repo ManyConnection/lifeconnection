@@ -1,4 +1,4 @@
-import { getProject } from "@/lib/queries/projects";
+import { createClient } from "@/lib/supabase/server";
 import { ProjectHeader } from "@/components/layout/project-header";
 import { notFound } from "next/navigation";
 
@@ -10,16 +10,20 @@ export default async function ProjectLayout({
   params: Promise<{ projectId: string }>;
 }) {
   const { projectId } = await params;
+  const supabase = await createClient();
 
-  let project;
-  try {
-    project = await getProject(projectId);
-  } catch {
-    notFound();
+  const { data: project, error } = await supabase
+    .from("projects")
+    .select("*")
+    .eq("id", projectId)
+    .single();
+
+  if (error || !project) {
+    return notFound();
   }
 
   return (
-    <div className="-m-6 lg:-m-8">
+    <div>
       <ProjectHeader project={project} />
       <div className="p-6 lg:p-8">{children}</div>
     </div>
