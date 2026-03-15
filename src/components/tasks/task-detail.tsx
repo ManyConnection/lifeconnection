@@ -12,6 +12,16 @@ import { Pencil, Trash2, ArrowLeft, Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
+interface Subtask {
+  id: string;
+  title: string;
+  task_number: number;
+  status: string;
+  priority: string;
+  assignee_id: string | null;
+  assignee: { id: string; display_name: string; avatar_url: string | null } | null;
+}
+
 interface Props {
   task: {
     id: string;
@@ -22,20 +32,15 @@ interface Props {
     priority: "low" | "medium" | "high" | "critical";
     assignee: { id: string; display_name: string; avatar_url: string | null } | null;
     creator: { id: string; display_name: string } | null;
+    parent_task_id: string | null;
     start_date: string | null;
     due_date: string | null;
     created_at: string;
     updated_at: string;
     task_labels: { label_id: string; labels: { id: string; name: string; color: string } | null }[];
-    subtasks: {
-      id: string;
-      title: string;
-      task_number: number;
-      status: string;
-      priority: string;
-      assignee_id: string | null;
-    }[];
   };
+  subtasks: Subtask[];
+  parentTask: { id: string; title: string; task_number: number; project_id: string } | null;
   comments: {
     id: string;
     content: string;
@@ -48,7 +53,7 @@ interface Props {
   projectKey: string;
 }
 
-export function TaskDetail({ task, comments, projectId, projectKey }: Props) {
+export function TaskDetail({ task, subtasks, parentTask, comments, projectId, projectKey }: Props) {
   const router = useRouter();
 
   const handleDelete = async () => {
@@ -72,14 +77,27 @@ export function TaskDetail({ task, comments, projectId, projectKey }: Props) {
       {/* Header */}
       <div className="flex items-center gap-4 mb-6">
         <Link
-          href={`/projects/${projectId}/tasks`}
+          href={parentTask ? `/projects/${projectId}/tasks/${parentTask.id}` : `/projects/${projectId}/tasks`}
           className="text-gray-300 hover:text-sky-500 transition-colors cursor-pointer"
         >
           <ArrowLeft size={20} />
         </Link>
-        <span className="text-gray-400 text-sm font-bold">
-          {projectKey}-{task.task_number}
-        </span>
+        <div className="flex items-center gap-2">
+          {parentTask && (
+            <>
+              <Link
+                href={`/projects/${projectId}/tasks/${parentTask.id}`}
+                className="text-gray-400 text-xs hover:text-sky-500 transition-colors cursor-pointer"
+              >
+                #{parentTask.task_number} {parentTask.title}
+              </Link>
+              <span className="text-gray-300">/</span>
+            </>
+          )}
+          <span className="text-gray-400 text-sm font-bold">
+            {projectKey}-{task.task_number}
+          </span>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -114,7 +132,7 @@ export function TaskDetail({ task, comments, projectId, projectKey }: Props) {
           <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xs font-bold text-gray-400 uppercase tracking-wider">
-                Subtasks ({task.subtasks.length})
+                Subtasks ({subtasks.length})
               </h2>
               <Link
                 href={`/projects/${projectId}/tasks/new?parent=${task.id}`}
@@ -124,9 +142,9 @@ export function TaskDetail({ task, comments, projectId, projectKey }: Props) {
                 詳細作成
               </Link>
             </div>
-            {task.subtasks.length > 0 && (
+            {subtasks.length > 0 && (
               <div className="space-y-1.5 mb-4">
-                {task.subtasks.map((sub) => (
+                {subtasks.map((sub) => (
                   <Link
                     key={sub.id}
                     href={`/projects/${projectId}/tasks/${sub.id}`}

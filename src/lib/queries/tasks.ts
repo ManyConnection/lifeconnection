@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { createClient } from "@/lib/supabase/server";
 import type { Database } from "@/lib/supabase/database.types";
 
@@ -46,7 +47,7 @@ export async function getTasks(
   return data;
 }
 
-export async function getTask(taskId: string) {
+export const getTask = cache(async (taskId: string) => {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("tasks")
@@ -55,15 +56,45 @@ export async function getTask(taskId: string) {
       *,
       assignee:profiles!tasks_assignee_id_fkey(id, display_name, avatar_url),
       creator:profiles!tasks_created_by_fkey(id, display_name, avatar_url),
-      task_labels(label_id, labels!task_labels_label_id_fkey(id, name, color)),
-      parent:tasks!tasks_parent_task_id_fkey(id, title, task_number, project_id),
-      subtasks:tasks!tasks_parent_task_id_fkey(id, title, task_number, status, priority, assignee_id)
+      task_labels(label_id, labels!task_labels_label_id_fkey(id, name, color))
     `
     )
     .eq("id", taskId)
     .single();
 
   if (error) return null;
+  return data;
+});
+
+// 親タスクを別クエリで取得
+export async function getParentTask(parentTaskId: string | null) {
+  if (!parentTaskId) return null;
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("tasks")
+    .select("id, title, task_number, project_id")
+    .eq("id", parentTaskId)
+    .single();
+
+  if (error) return null;
+  return data;
+}
+
+// サブタスクを別クエリで取得（自己参照FK問題回避）
+export async function getSubtasks(parentTaskId: string) {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("tasks")
+    .select(
+      `
+      id, title, task_number, status, priority, assignee_id,
+      assignee:profiles!tasks_assignee_id_fkey(id, display_name, avatar_url)
+    `
+    )
+    .eq("parent_task_id", parentTaskId)
+    .order("created_at", { ascending: true });
+
+  if (error) return [];
   return data;
 }
 
