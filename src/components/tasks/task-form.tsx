@@ -28,9 +28,10 @@ interface Props {
     due_date: string | null;
     task_labels: { label_id: string }[];
   };
+  parentTaskId?: string;
 }
 
-export function TaskForm({ projectId, members, labels, task }: Props) {
+export function TaskForm({ projectId, members, labels, task, parentTaskId }: Props) {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -69,7 +70,11 @@ export function TaskForm({ projectId, members, labels, task }: Props) {
     setLoading(true);
     setError(null);
 
-    const payload = { ...data, label_ids: selectedLabels };
+    const payload = {
+      ...data,
+      label_ids: selectedLabels,
+      parent_task_id: parentTaskId ?? task?.parent_task_id ?? null,
+    };
 
     if (task) {
       const result = await updateTask(task.id, projectId, payload);
@@ -88,7 +93,11 @@ export function TaskForm({ projectId, members, labels, task }: Props) {
         return;
       }
       toast.success("タスクを作成しました");
-      router.push(`/projects/${projectId}/tasks`);
+      if (parentTaskId) {
+        router.push(`/projects/${projectId}/tasks/${parentTaskId}`);
+      } else {
+        router.push(`/projects/${projectId}/tasks`);
+      }
     }
   };
 

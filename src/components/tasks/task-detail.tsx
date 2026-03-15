@@ -4,10 +4,11 @@ import Link from "next/link";
 import { TaskStatusBadge } from "./task-status-badge";
 import { TaskPriorityBadge } from "./task-priority-badge";
 import { TaskComments } from "./task-comments";
+import { SubtaskAdder } from "./subtask-adder";
 import { deleteTask, updateTaskStatus } from "@/lib/actions/tasks";
 import { TASK_STATUSES } from "@/lib/constants";
 import { format } from "date-fns";
-import { Pencil, Trash2, ArrowLeft } from "lucide-react";
+import { Pencil, Trash2, ArrowLeft, Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
@@ -110,12 +111,21 @@ export function TaskDetail({ task, comments, projectId, projectKey }: Props) {
           </div>
 
           {/* Subtasks */}
-          {task.subtasks.length > 0 && (
-            <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
-              <h2 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">
+          <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xs font-bold text-gray-400 uppercase tracking-wider">
                 Subtasks ({task.subtasks.length})
               </h2>
-              <div className="space-y-1.5">
+              <Link
+                href={`/projects/${projectId}/tasks/new?parent=${task.id}`}
+                className="flex items-center gap-1.5 text-xs font-semibold text-sky-500 hover:text-sky-600 transition-colors cursor-pointer"
+              >
+                <Plus size={14} />
+                詳細作成
+              </Link>
+            </div>
+            {task.subtasks.length > 0 && (
+              <div className="space-y-1.5 mb-4">
                 {task.subtasks.map((sub) => (
                   <Link
                     key={sub.id}
@@ -130,8 +140,9 @@ export function TaskDetail({ task, comments, projectId, projectKey }: Props) {
                   </Link>
                 ))}
               </div>
-            </div>
-          )}
+            )}
+            <SubtaskAdder projectId={projectId} parentTaskId={task.id} />
+          </div>
 
           {/* Comments */}
           <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
