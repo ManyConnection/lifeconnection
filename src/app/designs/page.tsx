@@ -4,6 +4,15 @@ import { Badge } from "@/components/ui/badge";
 
 const designs = [
   {
+    id: 14,
+    name: "Neural Hub",
+    description: "50+アプリを統合、AIが人生全体を分析する「人生のOS」",
+    path: "/designs/14-neural-hub",
+    preview: "bg-[#0a0a1a]",
+    accent: "from-violet-500 to-indigo-600",
+    isCool: true,
+  },
+  {
     id: 11,
     name: "Cyberpunk",
     description: "ネオン、グリッチエフェクト、サイバー感全開",
@@ -126,7 +135,7 @@ export default function DesignsPage() {
             LifeConnection デザイン候補
           </h1>
           <p className="text-zinc-400 text-lg">
-            13パターンから選んでください
+            14パターンから選んでください
           </p>
         </div>
 

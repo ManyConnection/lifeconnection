@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 
-// トップページはデザイン一覧にリダイレクト
+// トップページはダッシュボードにリダイレクト
 export default function Home() {
-  redirect("/designs");
+  redirect("/dashboard");
 }
