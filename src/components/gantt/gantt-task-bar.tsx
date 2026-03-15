@@ -1,7 +1,5 @@
 "use client";
 
-import Link from "next/link";
-
 interface Props {
   task: {
     id: string;
@@ -10,7 +8,7 @@ interface Props {
   };
   left: number;
   width: number;
-  projectId: string;
+  onClick: () => void;
 }
 
 const statusGradients: Record<string, string> = {
@@ -21,17 +19,17 @@ const statusGradients: Record<string, string> = {
   closed: "from-gray-500 to-gray-600",
 };
 
-export function GanttTaskBar({ task, left, width, projectId }: Props) {
+export function GanttTaskBar({ task, left, width, onClick }: Props) {
   const gradient = statusGradients[task.status] ?? statusGradients.open;
 
   return (
-    <Link
-      href={`/projects/${projectId}/tasks/${task.id}`}
-      className={`absolute top-2 h-7 rounded-lg bg-gradient-to-r ${gradient} flex items-center px-2 text-[10px] text-white font-medium truncate hover:brightness-110 transition-all cursor-pointer shadow-sm`}
+    <button
+      onClick={onClick}
+      className={`absolute top-2 h-7 rounded-lg bg-gradient-to-r ${gradient} flex items-center px-2 text-[10px] text-white font-medium truncate hover:brightness-110 hover:scale-y-110 transition-all cursor-pointer shadow-sm`}
       style={{ left, width: Math.max(width, 30) }}
       title={task.title}
     >
       {width > 60 ? task.title : ""}
-    </Link>
+    </button>
   );
 }

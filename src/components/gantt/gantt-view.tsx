@@ -3,6 +3,7 @@
 import { useState, useMemo } from "react";
 import { GanttToolbar } from "./gantt-toolbar";
 import { GanttTaskBar } from "./gantt-task-bar";
+import { GanttTaskModal } from "./gantt-task-modal";
 import {
   startOfDay,
   endOfDay,
@@ -46,6 +47,7 @@ export function GanttView({
   projectId: string;
 }) {
   const [zoom, setZoom] = useState<ZoomLevel>("day");
+  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
 
   const { startDate, endDate, columns, colWidth } = useMemo(() => {
     if (tasks.length === 0) {
@@ -164,20 +166,23 @@ export function GanttView({
                     key={task.id}
                     className="flex border-b border-sky-50 hover:bg-sky-50/30"
                   >
-                    <div className="w-[280px] shrink-0 px-4 py-3 text-sm text-gray-700 border-r border-sky-100 flex items-center gap-2 truncate">
+                    <button
+                      onClick={() => setSelectedTask(task)}
+                      className="w-[280px] shrink-0 px-4 py-3 text-sm text-gray-700 border-r border-sky-100 flex items-center gap-2 truncate text-left hover:bg-sky-50/50 transition-colors cursor-pointer"
+                    >
                       <span className={`w-2 h-2 rounded-full shrink-0 ${config.dotColor}`} />
                       <span className="text-gray-400 text-xs">
                         #{task.task_number}
                       </span>
-                      <span className="truncate">{task.title}</span>
-                    </div>
+                      <span className="truncate hover:text-sky-600 transition-colors">{task.title}</span>
+                    </button>
                     <div className="relative flex-1" style={{ height: 44 }}>
                       {bar && (
                         <GanttTaskBar
                           task={task}
                           left={bar.left}
                           width={bar.width}
-                          projectId={projectId}
+                          onClick={() => setSelectedTask(task)}
                         />
                       )}
                     </div>
@@ -233,6 +238,15 @@ export function GanttView({
             </svg>
           )}
         </div>
+      )}
+
+      {/* Task Detail Modal */}
+      {selectedTask && (
+        <GanttTaskModal
+          task={selectedTask}
+          projectId={projectId}
+          onClose={() => setSelectedTask(null)}
+        />
       )}
     </div>
   );
